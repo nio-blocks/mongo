@@ -1,5 +1,6 @@
 from nio.common.block.base import Block
 from nio.common.discovery import Discoverable, DiscoverableType
+from nio.metadata.properties.expression import ExpressionProperty
 from nio.metadata.properties.string import StringProperty
 from nio.metadata.properties.int import IntProperty
 from nio.metadata.properties.bool import BoolProperty
@@ -23,7 +24,7 @@ class MongoDB(Block):
     host = StringProperty(default="127.0.0.1")
     port = IntProperty(default=27017)
     database = StringProperty(default="test")
-    collection = StringProperty(default="signals")
+    collection = ExpressionProperty(default="signals")
     with_type = BoolProperty(default=False)
 
     def __init__(self):
@@ -44,8 +45,8 @@ class MongoDB(Block):
             raise e
 
     def process_signals(self, signals):
-        collection = getattr(self._db, self.collection)
         for s in signals:
+            collection = getattr(self._db, self.collection(s))
             self._save(collection, s)
 
     def _save(self, collection, signal):
