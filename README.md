@@ -9,7 +9,7 @@ Properties
 -   **host**: Mongo server host.
 -   **port**: Mongo server port.
 -   **database**: Database name.
--   **colleciton**: Collection name.
+-   **colleciton**: Expression property. Collection name.
 -   **with_type**: If True, includes the signal type in the document.
 
 Dependencies
