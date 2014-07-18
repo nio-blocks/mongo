@@ -46,8 +46,15 @@ class MongoDB(Block):
 
     def process_signals(self, signals):
         for s in signals:
-            collection = getattr(self._db, self.collection(s))
-            self._save(collection, s)
+            try:
+                collection_name = self.collection(s)
+                collection = getattr(self._db, collection_name)
+                self._save(collection, s)
+            except Exception as e:
+                self._logger.error(
+                    "Collection name evaluation failed: {0}: {1}".format(
+                        type(e).__name__, str(e))
+                )
 
     def _save(self, collection, signal):
         try:

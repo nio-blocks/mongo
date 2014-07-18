@@ -77,4 +77,19 @@ class TestMongoDB(NIOBlockTestCase):
                 'host': "some_bogus_host",
                 'port': 8080
             })
+
+    @patch('pymongo.MongoClient')
+    @patch("mongo.mongo_block.MongoDB._save")
+    def test_collection_expr_fail(self, mock_save, mock_client):
+        blk = MongoDB()
+        self.configure_block(blk, {
+            "collection": "{{dict($foo)}}"
+        })
+        signals = [Signal({'foo': 'bar'})]
+
+        blk.start()
+        blk.process_signals(signals)
+        with self.assertRaises(AssertionError):
+            mock_save.assert_called_with(ANY, ANY)
+
         blk.stop()
