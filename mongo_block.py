@@ -21,11 +21,12 @@ class MongoDB(Block):
         with_type (str): include the signal type in the record?
 
     """
-    host = StringProperty(default="127.0.0.1")
-    port = IntProperty(default=27017)
-    database = StringProperty(default="test")
-    collection = ExpressionProperty(default="signals")
-    with_type = BoolProperty(default=False)
+    host = StringProperty(title='Mongo Host', default="127.0.0.1")
+    port = IntProperty(title='Port', default=27017)
+    database = StringProperty(title='Database Name', default="test")
+    collection = ExpressionProperty(title='Collection Name', default="signals")
+    with_type = BoolProperty(
+        title='Include the type of logged signals?', default=False)
 
     def __init__(self):
         super().__init__()
