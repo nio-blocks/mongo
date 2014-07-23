@@ -5,9 +5,9 @@ try:
 except:
     pymongo_available = False
 
+from ..mongo_block import MongoDB
 from unittest import skipIf
 from unittest.mock import MagicMock, patch, ANY
-from mongo.mongo_block import MongoDB
 from nio.util.support.block_test_case import NIOBlockTestCase
 from nio.common.signal.base import Signal
 
