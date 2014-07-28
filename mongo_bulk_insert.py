@@ -57,6 +57,6 @@ class MongoBulkInsert(Block):
     def _save(self, collection, signals):
         try:
             signals = [s.to_dict(self.with_type) for s in signals]
-            collection.save(signals)
+            collection.insert(signals)
         except Exception as e:
             self._logger.error("Could not record signal: %s" % e)
