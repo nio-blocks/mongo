@@ -13,28 +13,15 @@ from nio.common.signal.base import Signal
 
 
 class SignalA(Signal):
+
     def __init__(self, a):
         super().__init__()
         self.a = a
 
 
-class SignalAB(Signal):
-    def __init__(self, a, b):
-        super().__init__()
-        self.a = a
-        self.b = b
-
-
-class SignalBCD(Signal):
-    def __init__(self, b, c, d):
-        super().__init__()
-        self.b = b
-        self.c = c
-        self.d = d
-
-
 @skipIf(not pymongo_available, 'pymongo is not available!!')
 class TestMongoDB(NIOBlockTestCase):
+
     @patch('pymongo.MongoClient')
     def test_aggregation(self, mongo):
         blk = MongoDB()
