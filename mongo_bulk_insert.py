@@ -26,7 +26,10 @@ class MongoBulkInsert(MongoDB):
 
     def _save(self, collection, signals):
         try:
-            signals = [s.to_dict(self.with_type) for s in signals]
-            collection.insert(signals)
+            collection.insert(self._bulk_generator(signals))
         except Exception as e:
             self._logger.error("Could not record signal: %s" % e)
+
+    def _bulk_generator(self, signals):
+        for s in signals:
+            yield s.to_dict(self.with_type)
