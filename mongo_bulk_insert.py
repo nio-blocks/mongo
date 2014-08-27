@@ -1,48 +1,18 @@
-from nio.common.block.base import Block
+from .mongo_block import MongoDB
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.metadata.properties.string import StringProperty
-from nio.metadata.properties.int import IntProperty
-from nio.metadata.properties.bool import BoolProperty
 
 
 @Discoverable(DiscoverableType.block)
-class MongoBulkInsert(Block):
+class MongoBulkInsert(MongoDB):
 
-    """ A block for recording signals to a database or other such
-    system-external store. This implementation is currently specific
-    to MongoDB but will be generalized later.
+    """ The same as the Mongo Block except that it won't evaluate the
+    collection property on each signal. It will also save signals as a list
+    of signals, rather than one-by-one.
 
-    Properties:
-        host (str): location of the database
-        port (int): open port served by database
-        database (str): database name
-        collection (str): collection name
-        with_type (str): include the signal type in the record?
-
+    Use this block for better performance on large volume inserts.
     """
-    host = StringProperty(title='Mongo Host', default="127.0.0.1")
-    port = IntProperty(title='Port', default=27017)
-    database = StringProperty(title='Database Name', default="test")
     collection = StringProperty(title='Collection Name', default="signals")
-    with_type = BoolProperty(
-        title='Include the type of logged signals?', default=False)
-
-    def __init__(self):
-        super().__init__()
-        self._client = None
-        self._db = None
-
-    def configure(self, context):
-        super().configure(context)
-        try:
-            import pymongo
-            self._client = pymongo.MongoClient(self.host, self.port)
-            self._db = getattr(self._client, self.database)
-        except Exception as e:
-            self._logger.error(
-                "Could not connect to Mongo instance: %s" % e
-            )
-            raise e
 
     def process_signals(self, signals):
         try:
