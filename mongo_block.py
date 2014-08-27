@@ -28,6 +28,9 @@ class MongoDB(Block):
     with_type = BoolProperty(
         title='Include the type of logged signals?', default=False)
 
+    username = StringProperty(title='User to connect as')
+    password = StringProperty(title='Password to connect with')
+
     def __init__(self):
         super().__init__()
         self._client = None
@@ -36,14 +39,18 @@ class MongoDB(Block):
     def configure(self, context):
         super().configure(context)
         try:
-            import pymongo
-            self._client = pymongo.MongoClient(self.host, self.port)
-            self._db = getattr(self._client, self.database)
+            self._connect_to_db()
         except Exception as e:
-            self._logger.error(
-                "Could not connect to Mongo instance: %s" % e
-            )
-            raise e
+            self._logger.error("Could not connect to Mongo instance: %s" % e)
+
+    def _connect_to_db(self):
+        import pymongo
+        self._client = pymongo.MongoClient(self.host, self.port)
+
+        self._db = getattr(self._client, self.database)
+
+        if self.username:
+            self._db.authenticate(self.username, self.password, source="admin")
 
     def process_signals(self, signals):
         for s in signals:
@@ -53,12 +60,8 @@ class MongoDB(Block):
                 self._save(collection, s)
             except Exception as e:
                 self._logger.error(
-                    "Collection name evaluation failed: {0}: {1}".format(
-                        type(e).__name__, str(e))
-                )
+                    "Error saving signal: {0}: {1}".format(
+                        type(e).__name__, str(e)))
 
     def _save(self, collection, signal):
-        try:
-            collection.save(signal.to_dict(self.with_type))
-        except Exception as e:
-            self._logger.error("Could not record signal: %s" % e)
+        collection.save(signal.to_dict(self.with_type))
