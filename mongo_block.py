@@ -52,11 +52,16 @@ class MongoDB(Block):
         if self.username:
             self._db.authenticate(self.username, self.password, source="admin")
 
+    def _get_sub_collection(self, collection, collection_name):
+        for c in collection_name.split('.'):
+            collection = getattr(collection, c)
+        return collection
+
     def process_signals(self, signals):
         for s in signals:
             try:
                 collection_name = self.collection(s)
-                collection = getattr(self._db, collection_name)
+                collection = self._get_sub_collection(self._db, collection_name)
                 self._save(collection, s)
             except Exception as e:
                 self._logger.error(

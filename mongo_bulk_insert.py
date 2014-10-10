@@ -14,10 +14,16 @@ class MongoBulkInsert(MongoDB):
     """
     collection = StringProperty(title='Collection Name', default="signals")
 
+    def _connect_to_db(self):
+        super()._connect_to_db()
+        if self._db:
+            self._collection = self._get_sub_collection(self._db, self.collection)
+        else:
+            self._collection = None
+
     def process_signals(self, signals):
         try:
-            collection = getattr(self._db, self.collection)
-            self._save(collection, signals)
+            self._save(self._collection, signals)
         except Exception as e:
             self._logger.error(
                 "Collection name evaluation failed: {0}: {1}".format(
