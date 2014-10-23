@@ -3,9 +3,24 @@ from nio.common.discovery import Discoverable, DiscoverableType
 from nio.metadata.properties.expression import ExpressionProperty
 from nio.metadata.properties.string import StringProperty
 from nio.metadata.properties.int import IntProperty
-from nio.metadata.properties.bool import BoolProperty
+from nio.metadata.properties.list import ListProperty
+from nio.metadata.properties.holder import PropertyHolder
+from nio.metadata.properties.select import SelectProperty
 from nio.common.signal.base import Signal
+from enum import Enum
 import ast
+
+
+class SortDirection(Enum):
+    DESCENDING = -1
+    ASCENDING = 1
+
+
+class Sort(PropertyHolder):
+    key = StringProperty(title="Key", default="key")
+    direction = SelectProperty(SortDirection,
+                               default=SortDirection.ASCENDING,
+                               title="Direction")
 
 
 @Discoverable(DiscoverableType.block)
@@ -26,6 +41,7 @@ class MongoDBQuery(Block):
     collection = ExpressionProperty(title='Collection Name', default="signals")
     condition = ExpressionProperty(title='Condition', default="{'id': {'$gt': 0}}")
     limit = IntProperty(title='Limit', default=0)
+    sort = ListProperty(Sort, title='Sort')
 
     username = StringProperty(title='User to connect as')
     password = StringProperty(title='Password to connect with')
@@ -34,6 +50,7 @@ class MongoDBQuery(Block):
         super().__init__()
         self._client = None
         self._db = None
+        self._sort = None
 
     def configure(self, context):
         super().configure(context)
@@ -41,6 +58,7 @@ class MongoDBQuery(Block):
             self._connect_to_db()
         except Exception as e:
             self._logger.error("Could not connect to Mongo instance: %s" % e)
+        self._init_sort()
 
     def stop(self):
         if self._client:
@@ -107,10 +125,19 @@ class MongoDBQuery(Block):
             raise e
         return condition
 
+    def _init_sort(self):
+        if len(self.sort) == 0:
+            return
+        self._sort = []
+        for s in self.sort:
+            self._sort.append((s.key, s.direction.value))
+
     def _query_mongo(self, collection, condition):
         output = []
         try:
-            cursor = collection.find(spec=condition, limit=self.limit)
+            cursor = collection.find(spec=condition,
+                                     limit=self.limit,
+                                     sort=self._sort)
             output.extend([Signal(c) for c in cursor])
         except Exception as e:
             self._logger.error(
