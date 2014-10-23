@@ -25,6 +25,7 @@ class MongoDBQuery(Block):
     database = StringProperty(title='Database Name', default="test")
     collection = ExpressionProperty(title='Collection Name', default="signals")
     condition = ExpressionProperty(title='Condition', default="{'id': {'$gt': 0}}")
+    limit = IntProperty(title='Limit', default=0)
 
     username = StringProperty(title='User to connect as')
     password = StringProperty(title='Password to connect with')
@@ -46,18 +47,6 @@ class MongoDBQuery(Block):
             self._client.close()
         super().stop()
 
-    def _connect_to_db(self):
-        import pymongo
-        self._client = pymongo.MongoClient(self.host, self.port)
-        self._db = getattr(self._client, self.database)
-        if self.username:
-            self._db.authenticate(self.username, self.password, source="admin")
-
-    def _get_sub_collection(self, collection, collection_name):
-        for c in collection_name.split('.'):
-            collection = getattr(collection, c)
-        return collection
-
     def process_signals(self, signals):
         output = []
         for s in signals:
@@ -70,6 +59,18 @@ class MongoDBQuery(Block):
                 continue
         if output:
             self.notify_signals(output)
+
+    def _connect_to_db(self):
+        import pymongo
+        self._client = pymongo.MongoClient(self.host, self.port)
+        self._db = getattr(self._client, self.database)
+        if self.username:
+            self._db.authenticate(self.username, self.password, source="admin")
+
+    def _get_sub_collection(self, collection, collection_name):
+        for c in collection_name.split('.'):
+            collection = getattr(collection, c)
+        return collection
 
     def _evaluate_collection(self, signal):
         try:
@@ -109,10 +110,7 @@ class MongoDBQuery(Block):
     def _query_mongo(self, collection, condition):
         output = []
         try:
-            if condition:
-                cursor = collection.find(condition)
-            else:
-                cursor = collection.find()
+            cursor = collection.find(spec=condition, limit=self.limit)
             output.extend([Signal(c) for c in cursor])
         except Exception as e:
             self._logger.error(
