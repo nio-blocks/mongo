@@ -59,11 +59,13 @@ class TestMongoDB(NIOBlockTestCase):
 
     def test_connection_failure(self):
         blk = MongoDB()
+        blk._logger.error = MagicMock()
+        self.configure_block(blk, {
+            'host': "some_bogus_host",
+            'port': 8080
+        })
         with self.assertRaises(Exception):
-            self.configure_block(blk, {
-                'host': "some_bogus_host",
-                'port': 8080
-            })
+            blk._connect_to_db()
 
     @patch('pymongo.MongoClient')
     @patch("mongo.mongo_block.MongoDB._save")
