@@ -13,6 +13,14 @@ class MongoDBUpdate(MongoDBBase):
 
     """ A block for updating a mongodb.
 
+    The default spec and document properties are configured so that when if the
+    mongo database already has the 'id' that the signal has, then mongo will be
+    updated with all the properties of the incoming signal witout overriding
+    any mongo fields that are not on the current signal. It assumes that 'id'
+    is an integer. A string would need to look like:
+        "{'id': '{{$id}}' }"
+    Notice the quotes around {{$id}}.
+
     Properties:
         spec (str): Expression property to query mongo. Should either be a
             string that is in the format of a dictionary or an expression that
@@ -27,7 +35,7 @@ class MongoDBUpdate(MongoDBBase):
     spec = ExpressionProperty(title='Query Document',
                               default="{'id': {{$id}} }")
     document = ExpressionProperty(title='Update Document',
-                                  default="{'id': {{$id+1}} }")
+                                  default="{{ { '\$set': $.to_dict() } }}")
     upsert = BoolProperty(title='Upsert', default=False)
     multi = BoolProperty(title='Multi', default=False)
 
