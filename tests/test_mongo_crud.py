@@ -1,9 +1,9 @@
-from ..mongo_block import MongoDB
 from unittest import skipIf
 from nio.util.support.block_test_case import NIOBlockTestCase
 from nio.common.signal.base import Signal
-from mongo.mongodb_find_block import MongoDBFind
-from mongo.mongodb_update_block import MongoDBUpdate
+from ..mongodb_find_block import MongoDBFind
+from ..mongodb_update_block import MongoDBUpdate
+from ..mongo_insert_block import MongoDBInsert
 
 pymongo_available = True
 try:
@@ -47,7 +47,7 @@ class TestMongoCRUD(NIOBlockTestCase):
         self.delete_signal()  # D
 
     def insert_signal(self):
-        inserter = MongoDB()
+        inserter = MongoDBInsert()
         self.configure_block(inserter, self._get_conf({
             "name": "Inserter"
         }))

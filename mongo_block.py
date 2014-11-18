@@ -38,16 +38,21 @@ class MongoDB(Block):
 
     def configure(self, context):
         super().configure(context)
+
+        # Adding deprecation notice
+        self._logger.error("THIS BLOCK IS DEPRECATED")
+        self._logger.error("Consider switching to the MongoDBInsert block")
+
         try:
             self._connect_to_db()
         except Exception as e:
             self._logger.error("Could not connect to Mongo instance: %s" % e)
-    
+
     def stop(self):
         if self._client:
             self._client.close()
         super().stop()
-    
+
     def _connect_to_db(self):
         import pymongo
         self._client = pymongo.MongoClient(self.host, self.port)
