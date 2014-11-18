@@ -1,15 +1,15 @@
+from ..mongo_insert_block import MongoDBInsert
+from unittest import skipIf
+from unittest.mock import MagicMock, patch
+from nio.util.support.block_test_case import NIOBlockTestCase
+from nio.common.signal.base import Signal
+
 
 pymongo_available = True
 try:
     import pymongo
 except:
     pymongo_available = False
-
-from ..mongo_block import MongoDB
-from unittest import skipIf
-from unittest.mock import MagicMock, patch, ANY
-from nio.util.support.block_test_case import NIOBlockTestCase
-from nio.common.signal.base import Signal
 
 
 class SignalA(Signal):
@@ -24,21 +24,21 @@ class TestMongoDB(NIOBlockTestCase):
 
     @patch('pymongo.MongoClient')
     def test_aggregation(self, mongo):
-        blk = MongoDB()
-        blk._save = MagicMock()
+        blk = MongoDBInsert()
+        blk.execute_query = MagicMock()
         self.configure_block(blk, {'with_type': True})
         signals = [
             SignalA('foo')
         ]
         blk.start()
         blk.process_signals(signals)
-        blk._save.assert_called_once_with(
+        blk.execute_query.assert_called_once_with(
             blk._db.signals, signals[0]
         )
         blk.stop()
 
     def test_save_to_db(self):
-        blk = MongoDB()
+        blk = MongoDBInsert()
         try:
             self.configure_block(blk, {'with_type': True})
             signals = [
@@ -58,7 +58,7 @@ class TestMongoDB(NIOBlockTestCase):
             pass
 
     def test_connection_failure(self):
-        blk = MongoDB()
+        blk = MongoDBInsert()
         blk._logger.error = MagicMock()
         self.configure_block(blk, {
             'host': "some_bogus_host",
@@ -68,9 +68,11 @@ class TestMongoDB(NIOBlockTestCase):
             blk._connect_to_db()
 
     @patch('pymongo.MongoClient')
-    @patch("mongo.mongo_block.MongoDB._save")
+    @patch("mongo.mongo_insert_block.MongoDBInsert.execute_query")
     def test_collection_expr_fail(self, mock_save, mock_client):
-        blk = MongoDB()
+        """ Make sure a bad collection causes no query to run """
+
+        blk = MongoDBInsert()
         self.configure_block(blk, {
             "collection": "{{dict($foo)}}"
         })
@@ -78,7 +80,6 @@ class TestMongoDB(NIOBlockTestCase):
 
         blk.start()
         blk.process_signals(signals)
-        with self.assertRaises(AssertionError):
-            mock_save.assert_called_with(ANY, ANY)
+        self.assertFalse(mock_save.called)
 
         blk.stop()

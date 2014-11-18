@@ -54,6 +54,11 @@ class MongoDBQuery(Block):
 
     def configure(self, context):
         super().configure(context)
+
+        # Adding deprecation notice
+        self._logger.error("THIS BLOCK IS DEPRECATED")
+        self._logger.error("Consider switching to the MongoDBFind block")
+
         try:
             self._connect_to_db()
         except Exception as e:
