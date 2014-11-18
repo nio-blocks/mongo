@@ -1,44 +1,16 @@
-from unittest import skipIf
-from nio.util.support.block_test_case import NIOBlockTestCase
 from nio.common.signal.base import Signal
 from ..mongodb_find_block import MongoDBFind
 from ..mongodb_update_block import MongoDBUpdate
 from ..mongo_insert_block import MongoDBInsert
-
-pymongo_available = True
-try:
-    import pymongo
-except:
-    pymongo_available = False
-
-MONGO_HOST = '127.0.0.1'
-MONGO_PORT = 27017
-MONGO_DB = 'test'
-MONGO_COLL = 'signals'
+from .test_mongo_base import TestMongoBase
 
 SIGNAL_VALUE = 'inserted by block'
 UPDATED_SIGNAL_VALUE = 'updated by block'
 
 
-@skipIf(not pymongo_available, 'pymongo is not available!!')
-class TestMongoCRUD(NIOBlockTestCase):
+class TestMongoCRUD(TestMongoBase):
 
     """ Tests the CRUD operations on a MongoDB with all available blocks """
-
-    def setUp(self):
-        super().setUp()
-        # Clear out the collection before we start
-        self._clear_db()
-
-    def tearDown(self):
-        # Clear out the collection again, to be safe
-        self._clear_db()
-        super().tearDown()
-
-    def _clear_db(self):
-        collection = pymongo.MongoClient(
-            MONGO_HOST, MONGO_PORT)[MONGO_DB][MONGO_COLL]
-        collection.drop()
 
     def test_crud(self):
         self.insert_signal()  # C
@@ -107,14 +79,3 @@ class TestMongoCRUD(NIOBlockTestCase):
     def delete_signal(self):
         # TODO: Add a MongoDelete block
         pass
-
-    def _get_conf(self, conf):
-        """ Return the passed conf, merged with the server conf"""
-        mongo_conf = {
-            'host': MONGO_HOST,
-            'port': MONGO_PORT,
-            'database': MONGO_DB,
-            'collection': MONGO_COLL,
-            'log_level': 'DEBUG'
-        }
-        return dict(list(mongo_conf.items()) + list(conf.items()))

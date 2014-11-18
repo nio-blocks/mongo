@@ -114,7 +114,7 @@ class MongoDBBase(Block):
                     output.extend(self.execute_query(coll, s))
                 except Exception as e:
                     # If the execute call fails, we won't use this signal
-                    self._logger.error("Signal failed: {} {}".format(
+                    self._logger.error("Query failed: {}: {}".format(
                         type(e).__name__, str(e)))
                     continue
 
