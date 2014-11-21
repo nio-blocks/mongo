@@ -83,3 +83,19 @@ class TestMongoDB(NIOBlockTestCase):
         self.assertFalse(mock_save.called)
 
         blk.stop()
+
+    def test_bad_naming(self):
+        blk = MongoDB()
+        # count is a mongo function.
+        self.configure_block(blk, {'collection': 'count'})
+        signals = [
+            SignalA('foo')
+        ]
+        collection = pymongo.MongoClient('127.0.0.1', 27017).test['count']
+        collection.drop()
+        blk.start()
+        blk.process_signals(signals)
+        for obj in collection.find():
+            obj = {key: obj[key] for key in obj if key not in {'_id', '_type'}}
+            self.assertEqual(obj, signals[0].to_dict(with_type=False))
+        blk.stop()

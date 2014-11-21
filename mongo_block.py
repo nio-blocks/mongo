@@ -64,7 +64,7 @@ class MongoDB(Block):
 
     def _get_sub_collection(self, collection, collection_name):
         for c in collection_name.split('.'):
-            collection = getattr(collection, c)
+            collection = collection[c]
         return collection
 
     def process_signals(self, signals):
