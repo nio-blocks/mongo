@@ -61,7 +61,7 @@ class MongoDBBase(Block):
 
     def _get_sub_collection(self, collection, collection_name):
         for col in collection_name.split('.'):
-            collection = getattr(collection, col)
+            collection = collection[col]
         return collection
 
     def _evaluate_collection(self, signal):
