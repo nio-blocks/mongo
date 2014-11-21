@@ -42,12 +42,12 @@ class MongoDB(Block):
             self._connect_to_db()
         except Exception as e:
             self._logger.error("Could not connect to Mongo instance: %s" % e)
-    
+
     def stop(self):
         if self._client:
             self._client.close()
         super().stop()
-    
+
     def _connect_to_db(self):
         import pymongo
         self._client = pymongo.MongoClient(self.host, self.port)
@@ -59,7 +59,7 @@ class MongoDB(Block):
 
     def _get_sub_collection(self, collection, collection_name):
         for c in collection_name.split('.'):
-            collection = getattr(collection, c)
+            collection = collection[c]
         return collection
 
     def process_signals(self, signals):
