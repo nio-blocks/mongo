@@ -68,7 +68,7 @@ class TestMongoDB(NIOBlockTestCase):
             blk._connect_to_db()
 
     @patch('pymongo.MongoClient')
-    @patch("mongo.mongo_insert_block.MongoDBInsert.execute_query")
+    @patch.object(MongoDBInsert, "execute_query")
     def test_collection_expr_fail(self, mock_save, mock_client):
         """ Make sure a bad collection causes no query to run """
 
@@ -85,7 +85,7 @@ class TestMongoDB(NIOBlockTestCase):
         blk.stop()
 
     def test_bad_naming(self):
-        blk = MongoDB()
+        blk = MongoDBInsert()
         # count is a mongo function.
         self.configure_block(blk, {'collection': 'count'})
         signals = [
