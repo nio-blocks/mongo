@@ -22,8 +22,7 @@ class SignalA(Signal):
 @skipIf(not pymongo_available, 'pymongo is not available!!')
 class TestMongoDB(NIOBlockTestCase):
 
-    @patch('pymongo.MongoClient')
-    def test_aggregation(self, mongo):
+    def test_aggregation(self):
         blk = MongoDBInsert()
         blk.execute_query = MagicMock()
         self.configure_block(blk, {'with_type': True})
