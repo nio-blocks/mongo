@@ -37,7 +37,7 @@ class TestMongoAggregation(TestMongoBase):
         blk.process_signals([Signal()])
         blk.stop()
 
-    def signals_notified(self, signals):
+    def signals_notified(self, signals, output_id='default'):
         # Should have 1 signal, with 3 vals in result
         self.assertEqual(len(signals), 1)
         self.assertEqual(len(signals[0].result), 3)
