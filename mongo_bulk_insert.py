@@ -1,6 +1,7 @@
 from .mongo_insert_block import MongoDBInsert
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.metadata.properties.string import StringProperty
+from pymongo.errors import DuplicateKeyError
 
 
 @Discoverable(DiscoverableType.block)
@@ -31,10 +32,12 @@ class MongoBulkInsert(MongoDBInsert):
                 [s.to_dict(self.with_type) for s in signals],
                 continue_on_error=True
             )
+        except DuplicateKeyError as e:
+            self._logger.warning('{}: {}'.format(type(e).__name__, e))
         except Exception as e:
             self._logger.error(
-                "Collection name evaluation failed: {0}: {1}".format(
-                    type(e).__name__, str(e)))
+                "Collection insert failed: {0}: {1}".format(
+                    type(e).__name__, e))
 
     def _bulk_generator(self, signals):
         for s in signals:
