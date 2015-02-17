@@ -27,4 +27,6 @@ class TestMongoBulkInsert(NIOBlockTestCase):
         blk.start()
         blk.process_signals(signals)
         blk._collection.insert.assert_called_once()
+        self.assertEqual(blk._collection.insert.call_args[1],
+                         {'continue_on_error': True})
         blk.stop()

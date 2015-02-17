@@ -27,7 +27,10 @@ class MongoBulkInsert(MongoDBInsert):
     def process_signals(self, signals):
         try:
             self._logger.debug("Inserting {} signals".format(len(signals)))
-            self._collection.insert([s.to_dict(self.with_type) for s in signals])
+            self._collection.insert(
+                [s.to_dict(self.with_type) for s in signals],
+                continue_on_error=True
+            )
         except Exception as e:
             self._logger.error(
                 "Collection name evaluation failed: {0}: {1}".format(
