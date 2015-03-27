@@ -22,6 +22,7 @@ class TestMongoBase(NIOBlockTestCase):
         super().__init__(method)
         self.connection = None
         self.collection = None
+        self.signals = []
 
     def setUp(self):
         super().setUp()
@@ -48,3 +49,6 @@ class TestMongoBase(NIOBlockTestCase):
             'log_level': 'DEBUG'
         }
         return dict(list(mongo_conf.items()) + list(conf.items()))
+
+    def signals_notified(self, signals, output_id='default'):
+        self.signals.extend(signals)

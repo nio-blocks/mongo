@@ -112,11 +112,9 @@ class MongoDBBase(Block):
             if coll:
                 try:
                     output.extend(self.execute_query(coll, s))
-                except Exception as e:
+                except:
                     # If the execute call fails, we won't use this signal
-                    self._logger.error("Query failed: {}: {}".format(
-                        type(e).__name__, str(e)))
-                    continue
+                    self._logger.exception("Query failed")
 
         # Check if we have anything to output
         if output:
