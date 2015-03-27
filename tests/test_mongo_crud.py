@@ -2,6 +2,7 @@ from nio.common.signal.base import Signal
 from ..mongodb_find_block import MongoDBFind
 from ..mongodb_update_block import MongoDBUpdate
 from ..mongo_insert_block import MongoDBInsert
+from ..mongodb_remove_block import MongoDBRemove
 from .test_mongo_base import TestMongoBase
 
 SIGNAL_VALUE = 'inserted by block'
@@ -77,5 +78,27 @@ class TestMongoCRUD(TestMongoBase):
         updater.stop()
 
     def delete_signal(self):
-        # TODO: Add a MongoDelete block
-        pass
+        # clear out the signals so far
+        self.signals[:] = []
+        remover = MongoDBRemove()
+        # Since we've updated the signal, we shouldn't remove the original
+        self.configure_block(remover, self._get_conf({
+            "condition": "{'val': '" + SIGNAL_VALUE + "'}",
+            "name": "Remover"
+        }))
+        remover.start()
+        remover.process_signals([Signal()])
+        self.assert_num_signals_notified(1, remover)
+        self.assertEqual(self.signals[0].deleted, 0)
+        remover.stop()
+
+        # Now let's try to delete the real value, make sure we get 1 deleted
+        self.configure_block(remover, self._get_conf({
+            "condition": "{'val': '" + UPDATED_SIGNAL_VALUE + "'}",
+            "name": "Remover"
+        }))
+        remover.start()
+        remover.process_signals([Signal()])
+        self.assert_num_signals_notified(2, remover)
+        self.assertEqual(self.signals[1].deleted, 1)
+        remover.stop()
