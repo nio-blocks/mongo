@@ -68,6 +68,11 @@ class Sortable():
         return existing_args
 
 
+class MongoVersion(Enum):
+    v2 = 0
+    v3 = 1
+
+
 class MongoDBBase(Block):
 
     """ A block for querying a mongodb.
@@ -84,6 +89,9 @@ class MongoDBBase(Block):
     database = StringProperty(title='Database Name', default="test")
     collection = ExpressionProperty(title='Collection Name', default="signals")
     creds = ObjectProperty(Credentials, title='Credentials')
+    mongo_version = SelectProperty(MongoVersion,
+                                   default=MongoVersion.v2,
+                                   title="MongoDB Version")
 
     def __init__(self):
         super().__init__()
@@ -103,6 +111,10 @@ class MongoDBBase(Block):
         if self._client:
             self._client.close()
         super().stop()
+
+    def pymongo3(self):
+        """ Returns True if the block is configured to use pymongo3 """
+        return self.mongo_version == MongoVersion.v3
 
     def process_signals(self, signals):
         output = []
