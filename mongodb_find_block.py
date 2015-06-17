@@ -1,8 +1,11 @@
 from .mongodb_base_block import MongoDBBase, Limitable, Sortable
+from nio.common.block.attribute import Output
 from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties.expression import ExpressionProperty
+from nio.metadata.properties import ExpressionProperty, VersionProperty
 
 
+@Output('no_results')
+@Output('results')
 @Discoverable(DiscoverableType.block)
 class MongoDBFind(Limitable, Sortable, MongoDBBase):
 
@@ -16,6 +19,7 @@ class MongoDBFind(Limitable, Sortable, MongoDBBase):
     """
     condition = ExpressionProperty(
         title='Condition', default="{'id': {'$gt': 0}}")
+    version = VersionProperty('2.0.0')
 
     def execute_query(self, collection, signal):
         condition = self.evaluate_expression(self.condition, signal)
@@ -26,4 +30,13 @@ class MongoDBFind(Limitable, Sortable, MongoDBBase):
         else:
             cursor = collection.find(spec=condition, **(self.query_args()))
 
+        # If we got nothing, send an empty signal to the no results output
+        if cursor.count() == 0:
+            self.notify_output_signals({}, signal, output='no_results')
+
         return cursor
+
+    def write_results(self, results):
+        """ Notify the signals on the results output """
+        if results:
+            self.notify_signals(results, 'results')

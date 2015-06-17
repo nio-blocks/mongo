@@ -81,7 +81,7 @@ class MongoDBBase(EnrichSignals, Block):
     database = StringProperty(title='Database Name', default="test")
     collection = ExpressionProperty(title='Collection Name', default="signals")
     creds = ObjectProperty(Credentials, title='Credentials')
-    version = VersionProperty('1.0.0')
+    version = VersionProperty('1.1.0')
 
     def __init__(self):
         super().__init__()
@@ -122,9 +122,15 @@ class MongoDBBase(EnrichSignals, Block):
                     # If the execute call fails, we won't use this signal
                     self._logger.exception("Query failed")
 
-        # Check if we have anything to output
-        if output:
-            self.notify_signals(output)
+        self.write_results(output)
+
+    def write_results(self, results):
+        """ Notify results as a list of signals.
+
+        This can be overridden to notify on different outputs.
+        """
+        if results:
+            self.notify_signals(results)
 
     def query_args(self):
         """ Query arguments to use in the pymongo query.
