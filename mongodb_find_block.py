@@ -1,7 +1,6 @@
 from .mongodb_base_block import MongoDBBase, Limitable, Sortable
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.metadata.properties.expression import ExpressionProperty
-from nio.common.signal.base import Signal
 
 
 @Discoverable(DiscoverableType.block)
@@ -16,8 +15,7 @@ class MongoDBFind(Limitable, Sortable, MongoDBBase):
 
     """
     condition = ExpressionProperty(
-        title='Condition',
-        default="{'id': {'$gt': 0}}")
+        title='Condition', default="{'id': {'$gt': 0}}")
 
     def execute_query(self, collection, signal):
         condition = self.evaluate_expression(self.condition, signal)
@@ -28,4 +26,4 @@ class MongoDBFind(Limitable, Sortable, MongoDBBase):
         else:
             cursor = collection.find(spec=condition, **(self.query_args()))
 
-        return [Signal(c) for c in cursor]
+        return cursor

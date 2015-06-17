@@ -2,7 +2,6 @@ from .mongodb_base_block import MongoDBBase
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.metadata.properties import ExpressionProperty, ListProperty, \
     PropertyHolder
-from nio.common.signal.base import Signal
 
 
 class AggregationPipe(PropertyHolder):
@@ -32,4 +31,4 @@ class MongoDBAggregation(MongoDBBase):
         self._logger.debug("Searching aggregation {}".format(pipes))
 
         cursor = collection.aggregate(pipes, **(self.query_args()))
-        return [Signal(cursor)]
+        return [cursor]

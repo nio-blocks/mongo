@@ -1,7 +1,6 @@
 from .mongodb_base_block import MongoDBBase
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.metadata.properties.bool import BoolProperty
-from nio.common.signal.base import Signal
 
 
 @Discoverable(DiscoverableType.block)
@@ -20,4 +19,4 @@ class MongoDBInsert(MongoDBBase):
 
     def execute_query(self, collection, signal):
         id = collection.save(signal.to_dict(self.with_type))
-        return [Signal({'id': id})]
+        return [{'id': id}]
