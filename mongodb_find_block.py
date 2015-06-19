@@ -23,5 +23,9 @@ class MongoDBFind(Limitable, Sortable, MongoDBBase):
         condition = self.evaluate_expression(self.condition, signal)
         self._logger.debug("Searching condition {}".format(condition))
 
-        cursor = collection.find(spec=condition, **(self.query_args()))
+        if self.pymongo3():
+            cursor = collection.find(filter=condition, **(self.query_args()))
+        else:
+            cursor = collection.find(spec=condition, **(self.query_args()))
+
         return [Signal(c) for c in cursor]

@@ -104,6 +104,12 @@ class MongoDBBase(Block):
             self._client.close()
         super().stop()
 
+    def pymongo3(self):
+        """ Returns True if the version of pymongo is 3 or greater """
+        import pymongo
+        pymongo_major_version = int(pymongo.version.split('.')[0])
+        return pymongo_major_version >= 3
+
     def process_signals(self, signals):
         output = []
         for s in signals:
