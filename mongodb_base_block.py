@@ -1,13 +1,10 @@
-from nio.common.block.base import Block
-from nio.metadata.properties.expression import ExpressionProperty
-from nio.metadata.properties.string import StringProperty
-from nio.metadata.properties.object import ObjectProperty
-from nio.metadata.properties.int import IntProperty
-from nio.metadata.properties.holder import PropertyHolder
-from nio.metadata.properties.list import ListProperty
-from nio.metadata.properties.select import SelectProperty
 from enum import Enum
 import ast
+from .mixins.enrich.enrich_signals import EnrichSignals
+from nio.common.block.base import Block
+from nio.metadata.properties import ExpressionProperty, StringProperty, \
+    ObjectProperty, IntProperty, PropertyHolder, ListProperty, \
+    SelectProperty, VersionProperty
 
 __all__ = ['MongoDBBase', 'Limitable', 'Sortable']
 
@@ -68,7 +65,7 @@ class Sortable():
         return existing_args
 
 
-class MongoDBBase(Block):
+class MongoDBBase(EnrichSignals, Block):
 
     """ A block for querying a mongodb.
 
@@ -84,6 +81,7 @@ class MongoDBBase(Block):
     database = StringProperty(title='Database Name', default="test")
     collection = ExpressionProperty(title='Collection Name', default="signals")
     creds = ObjectProperty(Credentials, title='Credentials')
+    version = VersionProperty('1.0.0')
 
     def __init__(self):
         super().__init__()
@@ -117,7 +115,9 @@ class MongoDBBase(Block):
             self._logger.debug("Evaluating in collection {}".format(coll))
             if coll:
                 try:
-                    output.extend(self.execute_query(coll, s))
+                    results = self.execute_query(coll, s)
+                    output.extend([self.get_output_signal(result, s)
+                                   for result in results])
                 except:
                     # If the execute call fails, we won't use this signal
                     self._logger.exception("Query failed")
@@ -148,7 +148,7 @@ class MongoDBBase(Block):
             signal (Signal): The signal which triggered the query
 
         Returns:
-            signals (list): Any signals to notify
+            signals (list): A list of signal dicts to notify
         """
         raise NotImplementedError()
 

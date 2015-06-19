@@ -2,7 +2,6 @@ from .mongodb_base_block import MongoDBBase
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.metadata.properties.expression import ExpressionProperty
 from nio.metadata.properties.bool import BoolProperty
-from nio.common.signal.base import Signal
 
 
 @Discoverable(DiscoverableType.block)
@@ -49,4 +48,4 @@ class MongoDBUpdate(MongoDBBase):
                                    document=doc,
                                    **(self.query_args()))
 
-        return [Signal(cursor)]
+        return [cursor]

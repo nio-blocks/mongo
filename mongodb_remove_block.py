@@ -1,7 +1,6 @@
 from .mongodb_base_block import MongoDBBase
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.metadata.properties import ExpressionProperty, BoolProperty
-from nio.common.signal.base import Signal
 
 
 @Discoverable(DiscoverableType.block)
@@ -27,4 +26,4 @@ class MongoDBRemove(MongoDBBase):
         self._logger.debug("Deleting on condition {}".format(condition))
 
         res = collection.remove(condition, multi=(not self.only_one))
-        return [Signal({'deleted': res.get('n', 0)})]
+        return [{'deleted': res.get('n', 0)}]
