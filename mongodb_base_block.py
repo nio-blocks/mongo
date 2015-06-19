@@ -65,11 +65,6 @@ class Sortable():
         return existing_args
 
 
-class MongoVersion(Enum):
-    v2 = 0
-    v3 = 1
-
-
 class MongoDBBase(EnrichSignals, Block):
 
     """ A block for querying a mongodb.
@@ -86,9 +81,6 @@ class MongoDBBase(EnrichSignals, Block):
     database = StringProperty(title='Database Name', default="test")
     collection = ExpressionProperty(title='Collection Name', default="signals")
     creds = ObjectProperty(Credentials, title='Credentials')
-    mongo_version = SelectProperty(MongoVersion,
-                                   default=MongoVersion.v2,
-                                   title="MongoDB Version")
     version = VersionProperty('1.0.0')
 
     def __init__(self):
@@ -111,8 +103,10 @@ class MongoDBBase(EnrichSignals, Block):
         super().stop()
 
     def pymongo3(self):
-        """ Returns True if the block is configured to use pymongo3 """
-        return self.mongo_version == MongoVersion.v3
+        """ Returns True if the version of pymongo is 3 or greater """
+        import pymongo
+        pymongo_major_version = int(pymongo.version.split('.')[0])
+        return pymongo_major_version >= 3
 
     def process_signals(self, signals):
         output = []
