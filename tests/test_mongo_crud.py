@@ -36,7 +36,7 @@ class TestMongoCRUD(TestMongoBase):
         }))
         finder.start()
         finder.process_signals([Signal()])
-        self.assert_num_signals_notified(1, finder)
+        self.assert_num_signals_notified(1, finder, 'results')
         finder.stop()
 
     def update_signal(self):
@@ -70,8 +70,8 @@ class TestMongoCRUD(TestMongoBase):
         finder.process_signals([Signal()])
         dont_finder.process_signals([Signal()])
 
-        self.assert_num_signals_notified(1, finder)
-        self.assert_num_signals_notified(0, dont_finder)
+        self.assert_num_signals_notified(1, finder, 'results')
+        self.assert_num_signals_notified(0, dont_finder, 'results')
 
         dont_finder.stop()
         finder.stop()
