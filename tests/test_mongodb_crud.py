@@ -1,9 +1,10 @@
-from nio.common.signal.base import Signal
+from nio.block.terminals import DEFAULT_TERMINAL
+from nio.signal.base import Signal
 from ..mongodb_find_block import MongoDBFind
 from ..mongodb_update_block import MongoDBUpdate
-from ..mongo_insert_block import MongoDBInsert
+from ..mongodb_insert_block import MongoDBInsert
 from ..mongodb_remove_block import MongoDBRemove
-from .test_mongo_base import TestMongoBase
+from .test_mongodb_base import TestMongoBase
 
 SIGNAL_VALUE = 'inserted by block'
 UPDATED_SIGNAL_VALUE = 'updated by block'
@@ -79,7 +80,7 @@ class TestMongoCRUD(TestMongoBase):
 
     def delete_signal(self):
         # clear out the signals so far
-        self.signals[:] = []
+        self.last_notified[DEFAULT_TERMINAL][:] = []
         remover = MongoDBRemove()
         # Since we've updated the signal, we shouldn't remove the original
         self.configure_block(remover, self._get_conf({
@@ -89,7 +90,7 @@ class TestMongoCRUD(TestMongoBase):
         remover.start()
         remover.process_signals([Signal()])
         self.assert_num_signals_notified(1, remover)
-        self.assertEqual(self.signals[0].deleted, 0)
+        self.assertEqual(self.last_notified[DEFAULT_TERMINAL][0].deleted, 0)
         remover.stop()
 
         # Now let's try to delete the real value, make sure we get 1 deleted
@@ -100,5 +101,5 @@ class TestMongoCRUD(TestMongoBase):
         remover.start()
         remover.process_signals([Signal()])
         self.assert_num_signals_notified(2, remover)
-        self.assertEqual(self.signals[1].deleted, 1)
+        self.assertEqual(self.last_notified[DEFAULT_TERMINAL][1].deleted, 1)
         remover.stop()

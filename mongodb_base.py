@@ -1,8 +1,8 @@
-from enum import Enum
 import ast
-from .mixins.enrich.enrich_signals import EnrichSignals
-from nio.common.block.base import Block
-from nio.metadata.properties import ExpressionProperty, StringProperty, \
+from enum import Enum
+from nio.block.base import Block
+from nio.block.mixins.enrich.enrich_signals import EnrichSignals
+from nio.properties import Property, StringProperty, \
     ObjectProperty, IntProperty, PropertyHolder, ListProperty, \
     SelectProperty, VersionProperty
 
@@ -16,8 +16,8 @@ class Credentials(PropertyHolder):
         username (str): User to connect as
         password (str): User's password
     """
-    username = StringProperty(title='User to connect as')
-    password = StringProperty(title='Password to connect with')
+    username = StringProperty(title='User to connect as', default="")
+    password = StringProperty(title='Password to connect with', default="")
 
 
 class Limitable():
@@ -28,7 +28,7 @@ class Limitable():
 
     def query_args(self):
         existing_args = super().query_args()
-        existing_args['limit'] = self.limit
+        existing_args['limit'] = self.limit()
         return existing_args
 
 
@@ -48,7 +48,7 @@ class Sortable():
 
     """ A Mongo block mixin that allows you to sort results """
 
-    sort = ListProperty(Sort, title='Sort')
+    sort = ListProperty(Sort, title='Sort', default=[])
 
     def __init__(self):
         super().__init__()
@@ -57,7 +57,7 @@ class Sortable():
     def configure(self, context):
         super().configure(context)
 
-        self._sort = [(s.key, s.direction.value) for s in self.sort]
+        self._sort = [(s.key(), s.direction().value) for s in self.sort()]
 
     def query_args(self):
         existing_args = super().query_args()
@@ -79,8 +79,9 @@ class MongoDBBase(EnrichSignals, Block):
     host = StringProperty(title='Mongo Host', default="127.0.0.1")
     port = IntProperty(title='Port', default=27017)
     database = StringProperty(title='Database Name', default="test")
-    collection = ExpressionProperty(title='Collection Name', default="signals")
-    creds = ObjectProperty(Credentials, title='Credentials')
+    collection = Property(title='Collection Name', default="signals")
+    creds = ObjectProperty(
+        Credentials, title='Credentials', default=Credentials())
     version = VersionProperty('1.1.0')
 
     def __init__(self):
@@ -92,9 +93,9 @@ class MongoDBBase(EnrichSignals, Block):
         super().configure(context)
         try:
             self._connect_to_db()
-            self._logger.debug("Connected")
+            self.logger.debug("Connected")
         except Exception as e:
-            self._logger.error(
+            self.logger.error(
                 "Could not connect to Mongo instance: {}".format(e))
 
     def stop(self):
@@ -112,7 +113,7 @@ class MongoDBBase(EnrichSignals, Block):
         output = []
         for s in signals:
             coll = self._evaluate_collection(s)
-            self._logger.debug("Evaluating in collection {}".format(coll))
+            self.logger.debug("Evaluating in collection {}".format(coll))
             if coll:
                 try:
                     results = self.execute_query(coll, s)
@@ -120,7 +121,7 @@ class MongoDBBase(EnrichSignals, Block):
                                    for result in results])
                 except:
                     # If the execute call fails, we won't use this signal
-                    self._logger.exception("Query failed")
+                    self.logger.exception("Query failed")
 
         self.write_results(output)
 
@@ -167,7 +168,7 @@ class MongoDBBase(EnrichSignals, Block):
         whether or not the expression can be returned.
 
         Params:
-            expression (expression): The ExpressionProperty reference
+            expression (expression): The Property reference
             signal (Signal): The signal to use to evaluate the expression
             force_dict (bool): Whether or not the expression has to evaluate
                 to a dictionary
@@ -191,19 +192,19 @@ class MongoDBBase(EnrichSignals, Block):
         if not isinstance(exp_result, dict):
             # Ok, this is still not a dict, what should we do?
             if force_dict:
-                raise TypeError("Expression needs to eval to a dict: "
+                raise TypeError(" needs to eval to a dict: "
                                 "{}".format(expression))
 
         return exp_result
 
     def _connect_to_db(self):
         import pymongo
-        self._client = pymongo.MongoClient(self.host, self.port)
-        self._db = getattr(self._client, self.database)
-        if self.creds.username:
-            self._logger.debug("Using authentication in login")
-            self._db.authenticate(self.creds.username,
-                                  self.creds.password,
+        self._client = pymongo.MongoClient(self.host(), self.port())
+        self._db = getattr(self._client, self.database())
+        if self.creds().username():
+            self.logger.debug("Using authentication in login")
+            self._db.authenticate(self.creds().username(),
+                                  self.creds().password(),
                                   source="admin")
 
     def _get_sub_collection(self, collection, collection_name):
@@ -222,4 +223,4 @@ class MongoDBBase(EnrichSignals, Block):
                                                   collection_name)
             return collection
         except Exception as e:
-            self._logger.error("Collection failed to evaluate: {}".format(e))
+            self.logger.error("Collection failed to evaluate: {}".format(e))

@@ -1,9 +1,9 @@
-from .mongodb_base_block import MongoDBBase
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties import ExpressionProperty, BoolProperty
+from .mongodb_base import MongoDBBase
+from nio.util.discovery import discoverable
+from nio.properties import Property, BoolProperty
 
 
-@Discoverable(DiscoverableType.block)
+@discoverable
 class MongoDBRemove(MongoDBBase):
 
     """ A block for running `remove` against a mongodb.
@@ -14,7 +14,7 @@ class MongoDBRemove(MongoDBBase):
         parseable JSON string
 
     """
-    condition = ExpressionProperty(
+    condition = Property(
         title='Condition',
         default="{'id': {'$gt': 0}}")
     only_one = BoolProperty(
@@ -23,7 +23,7 @@ class MongoDBRemove(MongoDBBase):
 
     def execute_query(self, collection, signal):
         condition = self.evaluate_expression(self.condition, signal)
-        self._logger.debug("Deleting on condition {}".format(condition))
+        self.logger.debug("Deleting on condition {}".format(condition))
 
-        res = collection.remove(condition, multi=(not self.only_one))
+        res = collection.remove(condition, multi=(not self.only_one()))
         return [{'deleted': res.get('n', 0)}]

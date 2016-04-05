@@ -1,5 +1,5 @@
-from .test_mongo_base import TestMongoBase
-from nio.common.signal.base import Signal
+from .test_mongodb_base import TestMongoBase
+from nio.signal.base import Signal
 from ..mongodb_aggregation_block import MongoDBAggregation
 
 

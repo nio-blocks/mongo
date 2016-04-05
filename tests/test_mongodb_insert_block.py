@@ -1,8 +1,8 @@
-from ..mongo_insert_block import MongoDBInsert
+from ..mongodb_insert_block import MongoDBInsert
 from unittest import skipIf
 from unittest.mock import MagicMock, patch
-from nio.util.support.block_test_case import NIOBlockTestCase
-from nio.common.signal.base import Signal
+from nio.testing.block_test_case import NIOBlockTestCase
+from nio.signal.base import Signal
 
 
 pymongo_available = True
@@ -55,16 +55,6 @@ class TestMongoDB(NIOBlockTestCase):
             raise e
         except Exception as e:
             pass
-
-    def test_connection_failure(self):
-        blk = MongoDBInsert()
-        blk._logger.error = MagicMock()
-        self.configure_block(blk, {
-            'host': "some_bogus_host",
-            'port': 8080
-        })
-        with self.assertRaises(Exception):
-            blk._connect_to_db()
 
     @patch('pymongo.MongoClient')
     @patch.object(MongoDBInsert, "execute_query")

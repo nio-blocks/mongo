@@ -1,11 +1,11 @@
-from .mongo_insert_block import MongoDBInsert
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties.string import StringProperty
+from .mongodb_insert_block import MongoDBInsert
+from nio.util.discovery import discoverable
+from nio.properties.string import StringProperty
 from pymongo.errors import DuplicateKeyError
 
 
-@Discoverable(DiscoverableType.block)
-class MongoBulkInsert(MongoDBInsert):
+@discoverable
+class MongoDBBulkInsert(MongoDBInsert):
 
     """ The same as the Mongo Block except that it won't evaluate the
     collection property on each signal. It will also save signals as a list
@@ -21,21 +21,21 @@ class MongoBulkInsert(MongoDBInsert):
         # After super configuring (this will connect, we can get our collection
         if self._db:
             self._collection = self._get_sub_collection(
-                self._db, self.collection)
+                self._db, self.collection())
         else:
             self._collection = None
 
     def process_signals(self, signals):
         try:
-            self._logger.debug("Inserting {} signals".format(len(signals)))
+            self.logger.debug("Inserting {} signals".format(len(signals)))
             self._collection.insert(
                 [s.to_dict(self.with_type) for s in signals],
                 continue_on_error=True
             )
         except DuplicateKeyError as e:
-            self._logger.warning('{}: {}'.format(type(e).__name__, e))
+            self.logger.warning('{}: {}'.format(type(e).__name__, e))
         except Exception as e:
-            self._logger.error(
+            self.logger.error(
                 "Collection insert failed: {0}: {1}".format(
                     type(e).__name__, e))
 

@@ -1,7 +1,7 @@
-from ..mongo_bulk_insert import MongoBulkInsert, DuplicateKeyError
+from ..mongodb_bulk_insert_block import MongoDBBulkInsert, DuplicateKeyError
 from unittest.mock import MagicMock, patch
-from nio.util.support.block_test_case import NIOBlockTestCase
-from nio.common.signal.base import Signal
+from nio.testing.block_test_case import NIOBlockTestCase
+from nio.signal.base import Signal
 
 
 class SignalA(Signal):
@@ -15,7 +15,7 @@ class TestMongoBulkInsert(NIOBlockTestCase):
 
     @patch('pymongo.MongoClient')
     def test_bulk_aggregation(self, mongo):
-        blk = MongoBulkInsert()
+        blk = MongoDBBulkInsert()
         self.configure_block(blk, {'with_type': True})
         blk._collection.insert = MagicMock()
         signals = [
@@ -33,33 +33,33 @@ class TestMongoBulkInsert(NIOBlockTestCase):
 
     @patch('pymongo.MongoClient')
     def test_duplicate_key_error(self, mongo):
-        blk = MongoBulkInsert()
+        blk = MongoDBBulkInsert()
         self.configure_block(blk, {'with_type': True})
         blk._collection.insert = MagicMock()
         blk._collection.insert.side_effect = DuplicateKeyError('uh oh')
-        blk._logger.warning = MagicMock()
+        blk.logger.warning = MagicMock()
         signals = [
             SignalA('foo')
         ]
         blk.start()
         blk.process_signals(signals)
         blk._collection.insert.assert_called_once()
-        blk._logger.warning.assert_called_with('DuplicateKeyError: uh oh')
+        blk.logger.warning.assert_called_with('DuplicateKeyError: uh oh')
         blk.stop()
 
     @patch('pymongo.MongoClient')
     def test_error(self, mongo):
-        blk = MongoBulkInsert()
+        blk = MongoDBBulkInsert()
         self.configure_block(blk, {'with_type': True})
         blk._collection.insert = MagicMock()
         blk._collection.insert.side_effect = Exception('uh oh')
-        blk._logger.error = MagicMock()
+        blk.logger.error = MagicMock()
         signals = [
             SignalA('foo')
         ]
         blk.start()
         blk.process_signals(signals)
         blk._collection.insert.assert_called_once()
-        blk._logger.error.assert_called_with('Collection insert failed:'
+        blk.logger.error.assert_called_with('Collection insert failed:'
                                              ' Exception: uh oh')
         blk.stop()
