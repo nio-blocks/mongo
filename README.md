@@ -9,8 +9,8 @@ Properties
 -   **host**: Mongo server host.
 -   **port**: Mongo server port.
 -   **database**: Database name.
--   **colleciton**: Expression property. Collection name. Can be of the form collection.subcollection.value to access sub collections
--   **with_type**: If True, includes the signal type in the document.
+-   **collection**: Expression property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections
+-   **with_type**: If `True`, includes the signal type in the document.
 
 Dependencies
 ----------------
@@ -34,7 +34,7 @@ None
 MongoBulkInsert
 ===========
 
-Exactly the same as MongoDB, except it stores data much faster. This is because it's **collection** property is a String property, not an Expression property. This speeds things up, as it doesn't have evaluate it for every insert
+Exactly the same as MongoDB, except it stores data much faster. This is because it's `collection` property is a String property, not an Expression property. This speeds things up, as it doesn't have to evaluate it for every insert.
 
 Properties
 --------------
@@ -42,8 +42,8 @@ Properties
 -   **host**: Mongo server host.
 -   **port**: Mongo server port.
 -   **database**: Database name.
--   **colleciton**: String property. Collection name. Can be of the form collection.subcollection.value to access sub collections
--   **with_type**: If True, includes the signal type in the document.
+-   **collection**: String property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections
+-   **with_type**: If `True`, includes the signal type in the document.
 
 Dependencies
 ----------------
