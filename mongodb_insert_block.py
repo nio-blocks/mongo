@@ -1,9 +1,9 @@
-from .mongodb_base_block import MongoDBBase
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties.bool import BoolProperty
+from .mongodb_base import MongoDBBase
+from nio.util.discovery import discoverable
+from nio.properties.bool import BoolProperty
 
 
-@Discoverable(DiscoverableType.block)
+@discoverable
 class MongoDBInsert(MongoDBBase):
 
     """ A block for recording signals to a database or other such
@@ -18,5 +18,5 @@ class MongoDBInsert(MongoDBBase):
         title='Include the type of logged signals?', default=False)
 
     def execute_query(self, collection, signal):
-        id = collection.save(signal.to_dict(self.with_type))
+        id = collection.save(signal.to_dict(self.with_type()))
         return [{'id': id}]

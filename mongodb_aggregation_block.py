@@ -1,16 +1,16 @@
-from .mongodb_base_block import MongoDBBase
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties import ExpressionProperty, ListProperty, \
+from .mongodb_base import MongoDBBase
+from nio.util.discovery import discoverable
+from nio.properties import Property, ListProperty, \
     PropertyHolder
 
 
 class AggregationPipe(PropertyHolder):
-    pipe = ExpressionProperty(title="Pipe Expression",
-                              default="{'$group': {'_id': '$field', " +
-                                      "'count': {'$sum': 1}}}")
+    pipe = Property(
+        title="Pipe Expression",
+        default="{'$group': {'_id': '$field', 'count': {'$sum': 1}}}")
 
 
-@Discoverable(DiscoverableType.block)
+@discoverable
 class MongoDBAggregation(MongoDBBase):
 
     """ A block for running `find` against a mongodb.
@@ -25,10 +25,10 @@ class MongoDBAggregation(MongoDBBase):
 
     def execute_query(self, collection, signal):
         pipes = []
-        for pipe in self.pipeline:
+        for pipe in self.pipeline():
             pipes.append(self.evaluate_expression(pipe.pipe, signal))
 
-        self._logger.debug("Searching aggregation {}".format(pipes))
+        self.logger.debug("Searching aggregation {}".format(pipes))
 
         cursor = collection.aggregate(pipes, **(self.query_args()))
         return [cursor]
