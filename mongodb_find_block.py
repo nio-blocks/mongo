@@ -31,7 +31,6 @@ class MongoDBFind(Limitable, Sortable, MongoDBBase):
         else:
             cursor = collection.find(spec=condition, **(self.query_args()))
 
-        # If we got nothing, send an empty signal to the no results output
         if cursor.count() == 0:
             self.notify_signals([signal], 'no_results')
 
