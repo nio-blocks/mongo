@@ -29,7 +29,7 @@ class MongoDBBulkInsert(MongoDBInsert):
         try:
             self.logger.debug("Inserting {} signals".format(len(signals)))
             self._collection.insert(
-                [s.to_dict(self.with_type) for s in signals],
+                [s.to_dict(self.with_type()) for s in signals],
                 continue_on_error=True
             )
         except DuplicateKeyError as e:
