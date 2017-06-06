@@ -1,0 +1,12 @@
+{
+  "nio/MongoDB": {
+    "Version": "1.0.0",
+    "Reference": "github.com/nio-blocks/mongo.git@v1.0.0",
+    "Language": "Python"
+  },
+  "nio/MongoBulkInsert": {
+    "Version": "1.0.0",
+    "Reference": "github.com/nio-blocks/mongo.git@v1.0.0",
+    "Language": "Python"
+  }
+}

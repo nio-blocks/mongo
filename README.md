@@ -29,7 +29,7 @@ Output
 ---------
 None
 
-----------------
+***
 
 MongoBulkInsert
 ===========

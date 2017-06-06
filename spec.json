@@ -1,0 +1,58 @@
+{
+  "nio/MongoDB": {
+    "Version": "1.0.0",
+    "Properties": {
+      "host": {
+        "description": "Mongo server host."
+      },
+      "port": {
+        "description": "Mongo server port."
+      },
+      "collection": {
+        "description": "Expression property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections"
+      },
+      "with_type": {
+        "description": "If `True`, includes the signal type in the document."
+      },
+      "database": {
+        "description": "Database name."
+      }
+    },
+    "Commands": {},
+    "Description": "Stores input signals in a mongo database. One document will be inserted into the database for each input signal.",
+    "Input": "One document will be inserted into the database for each input signal.",
+    "Category": "Database",
+    "Dependencies": [
+      "-   [pymongo](https://pypi.python.org/pypi/pymongo/)"
+    ],
+    "Output": "None"
+  },
+  "nio/MongoBulkInsert": {
+    "Version": "1.0.0",
+    "Properties": {
+      "host": {
+        "description": "Mongo server host."
+      },
+      "port": {
+        "description": "Mongo server port."
+      },
+      "collection": {
+        "description": "String property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections"
+      },
+      "with_type": {
+        "description": "If `True`, includes the signal type in the document."
+      },
+      "database": {
+        "description": "Database name."
+      }
+    },
+    "Commands": {},
+    "Category": "Database",
+    "Description": "Exactly the same as MongoDB, except it stores data much faster. This is because it's `collection` property is a String property, not an Expression property. This speeds things up, as it doesn't have to evaluate it for every insert.",
+    "Input": "One document will be inserted into the database for each input signal.",
+    "Dependencies": [
+      "-   [pymongo](https://pypi.python.org/pypi/pymongo/)"
+    ],
+    "Output": "None"
+  }
+}
