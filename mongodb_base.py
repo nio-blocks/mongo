@@ -216,8 +216,7 @@ class MongoDBBase(EnrichSignals, Block):
         if self.creds().username():
             self.logger.debug("Using authentication in login")
             self._db.authenticate(self.creds().username(),
-                                  self.creds().password(),
-                                  source="admin")
+                                  self.creds().password())
 
     def _get_sub_collection(self, collection, collection_name):
         for col in collection_name.split('.'):
