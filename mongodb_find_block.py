@@ -20,7 +20,6 @@ class MongoDBFind(Limitable, Sortable, MongoDBBase):
     """
     condition = Property(
         title='Condition', default="{'id': {'$gt': 0}}")
-    version = VersionProperty('2.0.0')
 
     def execute_query(self, collection, signal):
         condition = self.evaluate_expression(self.condition, signal)

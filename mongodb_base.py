@@ -1,12 +1,25 @@
 import ast
+import ssl
 from enum import Enum
 from nio.block.base import Block
 from nio.block.mixins.enrich.enrich_signals import EnrichSignals
 from nio.properties import Property, StringProperty, \
     ObjectProperty, IntProperty, PropertyHolder, ListProperty, \
-    SelectProperty, VersionProperty
+    SelectProperty, VersionProperty, BoolProperty
 
 __all__ = ['MongoDBBase', 'Limitable', 'Sortable']
+
+
+class Connection(PropertyHolder):
+
+    """ User credentials
+    Properties:
+        username (str): User to connect as
+        password (str): User's password
+    """
+    host = StringProperty(title='Mongo Host', default="127.0.0.1")
+    port = IntProperty(title='Port', default=27017)
+    ssl = BoolProperty(title='Use SSL', default=False)
 
 
 class Credentials(PropertyHolder):
@@ -18,6 +31,7 @@ class Credentials(PropertyHolder):
     """
     username = StringProperty(title='User to connect as', default="")
     password = StringProperty(title='Password to connect with', default="")
+    ssl = BoolProperty(title='Use SSL', default=False)
 
 
 class Limitable():
@@ -67,22 +81,15 @@ class Sortable():
 
 class MongoDBBase(EnrichSignals, Block):
 
-    """ A block for querying a mongodb.
+    """ A block for querying a mongodb.  """
 
-    Properties:
-        host (str): location of the database
-        port (int): open port served by database
-        database (str): database name
-        collection (expression): collection name
-
-    """
-    host = StringProperty(title='Mongo Host', default="127.0.0.1")
-    port = IntProperty(title='Port', default=27017)
+    connection = ObjectProperty(
+        Connection, title='Connection', default=Connection())
     database = StringProperty(title='Database Name', default="test")
     collection = Property(title='Collection Name', default="signals")
     creds = ObjectProperty(
         Credentials, title='Credentials', default=Credentials())
-    version = VersionProperty('1.1.0')
+    version = VersionProperty('3.0.0')
 
     def __init__(self):
         super().__init__()
@@ -199,7 +206,12 @@ class MongoDBBase(EnrichSignals, Block):
 
     def _connect_to_db(self):
         import pymongo
-        self._client = pymongo.MongoClient(self.host(), self.port())
+        self._client = pymongo.MongoClient(
+            self.connection().host(),
+            self.connection().port(),
+            ssl=self.connection().ssl(),
+            ssl_cert_reqs=ssl.CERT_NONE  # currently no support for validation
+        )
         self._db = getattr(self._client, self.database())
         if self.creds().username():
             self.logger.debug("Using authentication in login")
