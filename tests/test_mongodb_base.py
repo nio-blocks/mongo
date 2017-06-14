@@ -41,8 +41,11 @@ class TestMongoBase(NIOBlockTestCase):
     def _get_conf(self, conf):
         """ Return the passed conf, merged with the server conf"""
         mongo_conf = {
-            'host': MONGO_HOST,
-            'port': MONGO_PORT,
+            'connection': {
+                'host': MONGO_HOST,
+                'port': MONGO_PORT,
+                'ssl': False
+            },
             'database': MONGO_DB,
             'collection': MONGO_COLL,
             'log_level': 'DEBUG'
