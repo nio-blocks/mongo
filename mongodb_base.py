@@ -12,10 +12,12 @@ __all__ = ['MongoDBBase', 'Limitable', 'Sortable']
 
 class Connection(PropertyHolder):
 
-    """ User credentials
+    """ Mongo connection properties
     Properties:
-        username (str): User to connect as
-        password (str): User's password
+        host (str): Database host
+        port (int): Database port
+        ssl (bool): Whether or not to use SSL when connecting 
+                    (certs won't be validated)
     """
     host = StringProperty(title='Mongo Host', default="127.0.0.1")
     port = IntProperty(title='Port', default=27017)
