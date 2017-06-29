@@ -22,7 +22,8 @@ class SignalA(Signal):
 @skipIf(not pymongo_available, 'pymongo is not available!!')
 class TestMongoDB(NIOBlockTestCase):
 
-    def test_aggregation(self):
+    @patch('pymongo.MongoClient')
+    def test_aggregation(self, mock_client):
         blk = MongoDBInsert()
         blk.execute_query = MagicMock()
         self.configure_block(blk, {'with_type': True})
@@ -32,7 +33,7 @@ class TestMongoDB(NIOBlockTestCase):
         blk.start()
         blk.process_signals(signals)
         blk.execute_query.assert_called_once_with(
-            blk._db.signals, signals[0]
+            blk._db['signals'], signals[0]
         )
         blk.stop()
 
@@ -73,14 +74,15 @@ class TestMongoDB(NIOBlockTestCase):
 
         blk.stop()
 
-    def test_bad_naming(self):
+    @patch('pymongo.MongoClient')
+    def test_bad_naming(self, mock_client):
         blk = MongoDBInsert()
         # count is a mongo function.
         self.configure_block(blk, {'collection': 'count'})
         signals = [
             SignalA('foo')
         ]
-        collection = pymongo.MongoClient('127.0.0.1', 27017).test['count']
+        collection = mock_client('127.0.0.1', 27017).test['count']
         collection.drop()
         blk.start()
         blk.process_signals(signals)

@@ -16,7 +16,7 @@ class Connection(PropertyHolder):
     Properties:
         host (str): Database host
         port (int): Database port
-        ssl (bool): Whether or not to use SSL when connecting 
+        ssl (bool): Whether or not to use SSL when connecting
                     (certs won't be validated)
     """
     host = StringProperty(title='Mongo Host', default="127.0.0.1")
@@ -33,7 +33,6 @@ class Credentials(PropertyHolder):
     """
     username = StringProperty(title='User to connect as', default="")
     password = StringProperty(title='Password to connect with', default="")
-    ssl = BoolProperty(title='Use SSL', default=False)
 
 
 class Limitable():
