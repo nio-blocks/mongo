@@ -6,6 +6,7 @@ from nio.block.mixins.enrich.enrich_signals import EnrichSignals
 from nio.properties import Property, StringProperty, \
     ObjectProperty, IntProperty, PropertyHolder, ListProperty, \
     SelectProperty, VersionProperty, BoolProperty
+from nio.util.discovery import not_discoverable
 
 __all__ = ['MongoDBBase', 'Limitable', 'Sortable']
 
@@ -80,6 +81,7 @@ class Sortable():
         return existing_args
 
 
+@not_discoverable
 class MongoDBBase(EnrichSignals, Block):
 
     """ A block for querying a mongodb.  """
