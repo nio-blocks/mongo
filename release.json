@@ -1,11 +1,36 @@
 {
-  "nio/MongoDB": {
-    "Version": "1.0.0",
+  "nio/MongoDBAggregation": {
+    "Version": "3.0.0",
     "Reference": "github.com/nio-blocks/mongo.git@v1.0.0",
     "Language": "Python"
   },
-  "nio/MongoBulkInsert": {
-    "Version": "1.0.0",
+  "nio/MongoDBBulkInsert": {
+    "Version": "3.0.0",
+    "Reference": "github.com/nio-blocks/mongo.git@v1.0.0",
+    "Language": "Python"
+  },
+  "nio/MongoDBCommand": {
+    "Version": "3.0.0",
+    "Reference": "github.com/nio-blocks/mongo.git@v1.0.0",
+    "Language": "Python"
+  },
+  "nio/MongoDBFind": {
+    "Version": "3.0.0",
+    "Reference": "github.com/nio-blocks/mongo.git@v1.0.0",
+    "Language": "Python"
+  },
+  "nio/MongoDBInsert": {
+    "Version": "3.0.0",
+    "Reference": "github.com/nio-blocks/mongo.git@v1.0.0",
+    "Language": "Python"
+  },
+  "nio/MongoDBRemove": {
+    "Version": "3.0.0",
+    "Reference": "github.com/nio-blocks/mongo.git@v1.0.0",
+    "Language": "Python"
+  },
+  "nio/MongoDBUpdate": {
+    "Version": "3.0.0",
     "Reference": "github.com/nio-blocks/mongo.git@v1.0.0",
     "Language": "Python"
   }
