@@ -26,7 +26,7 @@ class TestMongoBulkInsert(NIOBlockTestCase):
         ]
         blk.start()
         blk.process_signals(signals)
-        blk._collection.insert.assert_called_once()
+        self.assertEqual(blk._collection.insert.call_count, 1)
         self.assertEqual(blk._collection.insert.call_args[1],
                          {'continue_on_error': True})
         blk.stop()
@@ -43,7 +43,7 @@ class TestMongoBulkInsert(NIOBlockTestCase):
         ]
         blk.start()
         blk.process_signals(signals)
-        blk._collection.insert.assert_called_once()
+        self.assertEqual(blk._collection.insert.call_count, 1)
         blk.logger.warning.assert_called_with('DuplicateKeyError: uh oh')
         blk.stop()
 
@@ -59,7 +59,7 @@ class TestMongoBulkInsert(NIOBlockTestCase):
         ]
         blk.start()
         blk.process_signals(signals)
-        blk._collection.insert.assert_called_once()
+        self.assertEqual(blk._collection.insert.call_count, 1)
         blk.logger.error.assert_called_with('Collection insert failed:'
                                              ' Exception: uh oh')
         blk.stop()
