@@ -1,326 +1,58 @@
 {
   "nio/MongoDBAggregation": {
-    "Commands": {},
-    "Dependencies": [],
-    "Description": "",
-    "Input": "",
-    "Output": "",
-    "Properties": {
-      "Aggregation Pipeline": {
-        "description": ""
-      },
-      "Collection Name": {
-        "default": "signals",
-        "description": ""
-      },
-      "Connection": {
-        "default": {
-          "host": "127.0.0.1",
-          "port": 27017,
-          "ssl": false
-        },
-        "description": ""
-      },
-      "Credentials": {
-        "default": {
-          "password": "",
-          "username": ""
-        },
-        "description": ""
-      },
-      "Database Name": {
-        "default": "test",
-        "description": ""
-      },
-      "Signal Enrichment": {
-        "default": {
-          "enrich_field": "",
-          "exclude_existing": true
-        },
-        "description": ""
-      }
-    },
-    "Version": "3.0.0"
+    "version": "0.0.1",
+    "description": "",
+    "inputs": {},
+    "outputs": {},
+    "properties": {},
+    "commands": {}
   },
   "nio/MongoDBBulkInsert": {
-    "Commands": {},
-    "Dependencies": [],
-    "Description": "",
-    "Input": "",
-    "Output": "",
-    "Properties": {
-      "Collection Name": {
-        "default": "signals",
-        "description": ""
-      },
-      "Connection": {
-        "default": {
-          "host": "127.0.0.1",
-          "port": 27017,
-          "ssl": false
-        },
-        "description": ""
-      },
-      "Credentials": {
-        "default": {
-          "password": "",
-          "username": ""
-        },
-        "description": ""
-      },
-      "Database Name": {
-        "default": "test",
-        "description": ""
-      },
-      "Include the type of logged signals?": {
-        "description": ""
-      },
-      "Signal Enrichment": {
-        "default": {
-          "enrich_field": "",
-          "exclude_existing": true
-        },
-        "description": ""
-      }
-    },
-    "Version": "3.0.0"
+    "version": "0.0.1",
+    "description": "",
+    "inputs": {},
+    "outputs": {},
+    "properties": {},
+    "commands": {}
   },
   "nio/MongoDBCommand": {
-    "Commands": {},
-    "Dependencies": [],
-    "Description": "",
-    "Input": "",
-    "Output": "",
-    "Properties": {
-      "Collection Name": {
-        "default": "signals",
-        "description": ""
-      },
-      "Command": {
-        "default": "dbstats",
-        "description": ""
-      },
-      "Connection": {
-        "default": {
-          "host": "127.0.0.1",
-          "port": 27017,
-          "ssl": false
-        },
-        "description": ""
-      },
-      "Credentials": {
-        "default": {
-          "password": "",
-          "username": ""
-        },
-        "description": ""
-      },
-      "Database Name": {
-        "default": "test",
-        "description": ""
-      },
-      "Signal Enrichment": {
-        "default": {
-          "enrich_field": "",
-          "exclude_existing": true
-        },
-        "description": ""
-      }
-    },
-    "Version": "3.0.0"
+    "version": "0.0.1",
+    "description": "",
+    "inputs": {},
+    "outputs": {},
+    "properties": {},
+    "commands": {}
   },
   "nio/MongoDBFind": {
-    "Commands": {},
-    "Dependencies": [],
-    "Description": "",
-    "Input": "",
-    "Output": "",
-    "Properties": {
-      "Collection Name": {
-        "default": "signals",
-        "description": ""
-      },
-      "Condition": {
-        "default": "{'id': {'$gt': 0}}",
-        "description": ""
-      },
-      "Connection": {
-        "default": {
-          "host": "127.0.0.1",
-          "port": 27017,
-          "ssl": false
-        },
-        "description": ""
-      },
-      "Credentials": {
-        "default": {
-          "password": "",
-          "username": ""
-        },
-        "description": ""
-      },
-      "Database Name": {
-        "default": "test",
-        "description": ""
-      },
-      "Limit": {
-        "description": ""
-      },
-      "Signal Enrichment": {
-        "default": {
-          "enrich_field": "",
-          "exclude_existing": true
-        },
-        "description": ""
-      },
-      "Sort": {
-        "description": ""
-      }
-    },
-    "Version": "3.0.0"
+    "version": "0.0.1",
+    "description": "",
+    "inputs": {},
+    "outputs": {},
+    "properties": {},
+    "commands": {}
   },
   "nio/MongoDBInsert": {
-    "Commands": {},
-    "Dependencies": [],
-    "Description": "",
-    "Input": "",
-    "Output": "",
-    "Properties": {
-      "Collection Name": {
-        "default": "signals",
-        "description": ""
-      },
-      "Connection": {
-        "default": {
-          "host": "127.0.0.1",
-          "port": 27017,
-          "ssl": false
-        },
-        "description": ""
-      },
-      "Credentials": {
-        "default": {
-          "password": "",
-          "username": ""
-        },
-        "description": ""
-      },
-      "Database Name": {
-        "default": "test",
-        "description": ""
-      },
-      "Include the type of logged signals?": {
-        "description": ""
-      },
-      "Signal Enrichment": {
-        "default": {
-          "enrich_field": "",
-          "exclude_existing": true
-        },
-        "description": ""
-      }
-    },
-    "Version": "3.0.0"
+    "version": "0.0.1",
+    "description": "",
+    "inputs": {},
+    "outputs": {},
+    "properties": {},
+    "commands": {}
   },
   "nio/MongoDBRemove": {
-    "Commands": {},
-    "Dependencies": [],
-    "Description": "",
-    "Input": "",
-    "Output": "",
-    "Properties": {
-      "Collection Name": {
-        "default": "signals",
-        "description": ""
-      },
-      "Condition": {
-        "default": "{'id': {'$gt': 0}}",
-        "description": ""
-      },
-      "Connection": {
-        "default": {
-          "host": "127.0.0.1",
-          "port": 27017,
-          "ssl": false
-        },
-        "description": ""
-      },
-      "Credentials": {
-        "default": {
-          "password": "",
-          "username": ""
-        },
-        "description": ""
-      },
-      "Database Name": {
-        "default": "test",
-        "description": ""
-      },
-      "Maximum One Deletion": {
-        "description": ""
-      },
-      "Signal Enrichment": {
-        "default": {
-          "enrich_field": "",
-          "exclude_existing": true
-        },
-        "description": ""
-      }
-    },
-    "Version": "3.0.0"
+    "version": "0.0.1",
+    "description": "",
+    "inputs": {},
+    "outputs": {},
+    "properties": {},
+    "commands": {}
   },
   "nio/MongoDBUpdate": {
-    "Commands": {},
-    "Dependencies": [],
-    "Description": "",
-    "Input": "",
-    "Output": "",
-    "Properties": {
-      "Collection Name": {
-        "default": "signals",
-        "description": ""
-      },
-      "Connection": {
-        "default": {
-          "host": "127.0.0.1",
-          "port": 27017,
-          "ssl": false
-        },
-        "description": ""
-      },
-      "Credentials": {
-        "default": {
-          "password": "",
-          "username": ""
-        },
-        "description": ""
-      },
-      "Database Name": {
-        "default": "test",
-        "description": ""
-      },
-      "Multi": {
-        "description": ""
-      },
-      "Query Document": {
-        "default": "{'id': {{$id}} }",
-        "description": ""
-      },
-      "Signal Enrichment": {
-        "default": {
-          "enrich_field": "",
-          "exclude_existing": true
-        },
-        "description": ""
-      },
-      "Update Document": {
-        "default": "{{ { '\\$set': $.to_dict() } }}",
-        "description": ""
-      },
-      "Upsert": {
-        "description": ""
-      }
-    },
-    "Version": "3.0.0"
+    "version": "0.0.1",
+    "description": "",
+    "inputs": {},
+    "outputs": {},
+    "properties": {},
+    "commands": {}
   }
 }
