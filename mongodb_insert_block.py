@@ -1,9 +1,8 @@
-from .mongodb_base import MongoDBBase
-from nio.util.discovery import discoverable
 from nio.properties.bool import BoolProperty
 
+from .mongodb_base import MongoDBBase
 
-@discoverable
+
 class MongoDBInsert(MongoDBBase):
 
     """ A block for recording signals to a database or other such

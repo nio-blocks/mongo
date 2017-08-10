@@ -1,9 +1,8 @@
-from .mongodb_base import MongoDBBase
-from nio.util.discovery import discoverable
 from nio.properties import Property
 
+from .mongodb_base import MongoDBBase
 
-@discoverable
+
 class MongoDBCommand(MongoDBBase):
 
     """ A block for running mongo commands

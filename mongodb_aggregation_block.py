@@ -1,7 +1,7 @@
-from .mongodb_base import MongoDBBase
-from nio.util.discovery import discoverable
 from nio.properties import Property, ListProperty, \
     PropertyHolder
+
+from .mongodb_base import MongoDBBase
 
 
 class AggregationPipe(PropertyHolder):
@@ -10,17 +10,9 @@ class AggregationPipe(PropertyHolder):
         default="{'$group': {'_id': '$field', 'count': {'$sum': 1}}}")
 
 
-@discoverable
 class MongoDBAggregation(MongoDBBase):
 
-    """ A block for running `find` against a mongodb.
-
-    Properties:
-        condition (expression): A dictionary form of a find expression. This is
-        an expression property that can evaluate to a dictionary or be a
-        parseable JSON string
-
-    """
+    """ A block for finding and grouping multiple documents together."""
     pipeline = ListProperty(AggregationPipe, title="Aggregation Pipeline")
 
     def execute_query(self, collection, signal):

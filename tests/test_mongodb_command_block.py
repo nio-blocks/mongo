@@ -1,7 +1,8 @@
-from ..mongodb_command_block import MongoDBCommand
 from unittest.mock import MagicMock, patch
 from nio.testing.block_test_case import NIOBlockTestCase
 from nio.signal.base import Signal
+
+from ..mongodb_command_block import MongoDBCommand
 
 
 class SignalA(Signal):

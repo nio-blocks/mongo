@@ -1,9 +1,10 @@
-from ..mongodb_insert_block import MongoDBInsert
 from unittest import skipIf
 from unittest.mock import MagicMock, patch
+
 from nio.testing.block_test_case import NIOBlockTestCase
 from nio.signal.base import Signal
 
+from ..mongodb_insert_block import MongoDBInsert
 
 pymongo_available = True
 try:

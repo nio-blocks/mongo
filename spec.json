@@ -1,58 +1,430 @@
 {
   "nio/MongoDBAggregation": {
-    "version": "0.0.1",
-    "description": "",
+    "version": "3.0.0",
+    "description": "A block for finding and grouping multiple documents together.",
+    "properties": {
+      "collection": {
+        "title": "Collection Name",
+        "type": "Type",
+        "description": "Expression property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections.",
+        "default": "signals"
+      },
+      "connection": {
+        "title": "Connection",
+        "type": "ObjectType",
+        "description": "Configurables for which Mongo Database to connect to.",
+        "default": {
+          "host": "127.0.0.1",
+          "ssl": false,
+          "port": 27017
+        }
+      },
+      "creds": {
+        "title": "Credentials",
+        "type": "ObjectType",
+        "description": "Mongo username and password needed to connect to database.",
+        "default": {
+          "username": "",
+          "password": ""
+        }
+      },
+      "database": {
+        "title": "Database Name",
+        "type": "StringType",
+        "description": "Database name.",
+        "default": "test"
+      },
+      "enrich": {
+        "title": "Signal Enrichment",
+        "type": "ObjectType",
+        "description": "If true, include original input signal in output signal.",
+        "default": {
+          "exclude_existing": true,
+          "enrich_field": ""
+        }
+      },
+      "pipeline": {
+        "title": "Aggregation Pipeline",
+        "type": "ListType",
+        "description": "The pipelines used to transform the documents into an aggregated result.",
+        "default": []
+      }
+    },
     "inputs": {},
     "outputs": {},
-    "properties": {},
     "commands": {}
   },
   "nio/MongoDBBulkInsert": {
-    "version": "0.0.1",
-    "description": "",
+    "version": "3.0.0",
+    "description": "Exactly the same as MongoDB, except it stores data much faster. This is because it's `collection` property is a String property, not an Expression property. This speeds things up, as it doesn't have to evaluate it for every insert.",
+    "properties": {
+      "collection": {
+        "title": "Collection Name",
+        "type": "StringType",
+        "description": "Expression property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections.",
+        "default": "signals"
+      },
+      "connection": {
+        "title": "Connection",
+        "type": "ObjectType",
+        "description": "Configurables for which Mongo Database to connect to.",
+        "default": {
+          "host": "127.0.0.1",
+          "ssl": false,
+          "port": 27017
+        }
+      },
+      "creds": {
+        "title": "Credentials",
+        "type": "ObjectType",
+        "description": "Mongo username and password needed to connect to database.",
+        "default": {
+          "username": "",
+          "password": ""
+        }
+      },
+      "database": {
+        "title": "Database Name",
+        "type": "StringType",
+        "description": "Database name.",
+        "default": "test"
+      },
+      "enrich": {
+        "title": "Signal Enrichment",
+        "type": "ObjectType",
+        "description": "If true, include original input signal in output signal.",
+        "default": {
+          "exclude_existing": true,
+          "enrich_field": ""
+        }
+      },
+      "with_type": {
+        "title": "Include the type of logged signals?",
+        "type": "BoolType",
+        "description": "If `True`, includes the signal type in the document.",
+        "default": false
+      }
+    },
     "inputs": {},
     "outputs": {},
-    "properties": {},
     "commands": {}
   },
   "nio/MongoDBCommand": {
-    "version": "0.0.1",
-    "description": "",
+    "version": "3.0.0",
+    "description": "A block for running mongo commands",
+    "properties": {
+      "collection": {
+        "title": "Collection Name",
+        "type": "Type",
+        "description": "Expression property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections.",
+        "default": "signals"
+      },
+      "command": {
+        "title": "Command",
+        "type": "Type",
+        "description": "Command to run against database. If command is a string then the command {*command*: 1} will be sent. Otherwise, command must be a dict and will be sent as is.",
+        "default": "dbstats"
+      },
+      "connection": {
+        "title": "Connection",
+        "type": "ObjectType",
+        "description": "Configurables for which Mongo Database to connect to.",
+        "default": {
+          "host": "127.0.0.1",
+          "ssl": false,
+          "port": 27017
+        }
+      },
+      "creds": {
+        "title": "Credentials",
+        "type": "ObjectType",
+        "description": "Mongo username and password needed to connect to database.",
+        "default": {
+          "username": "",
+          "password": ""
+        }
+      },
+      "database": {
+        "title": "Database Name",
+        "type": "StringType",
+        "description": "Database name.",
+        "default": "test"
+      },
+      "enrich": {
+        "title": "Signal Enrichment",
+        "type": "ObjectType",
+        "description": "If true, include original input signal in output signal.",
+        "default": {
+          "exclude_existing": true,
+          "enrich_field": ""
+        }
+      }
+    },
     "inputs": {},
     "outputs": {},
-    "properties": {},
     "commands": {}
   },
   "nio/MongoDBFind": {
-    "version": "0.0.1",
-    "description": "",
+    "version": "3.0.0",
+    "description": "A block for running `find` against a mongodb.",
+    "properties": {
+      "collection": {
+        "title": "Collection Name",
+        "type": "Type",
+        "description": "Expression property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections.",
+        "default": "signals"
+      },
+      "condition": {
+        "title": "Condition",
+        "type": "Type",
+        "description": "A dictionary form of a find expression. This is an expression property that can evaluate to a dictionary or be a parseable JSON string",
+        "default": "{'id': {'$gt': 0}}"
+      },
+      "connection": {
+        "title": "Connection",
+        "type": "ObjectType",
+        "description": "Configurables for which Mongo Database to connect to.",
+        "default": {
+          "host": "127.0.0.1",
+          "ssl": false,
+          "port": 27017
+        }
+      },
+      "creds": {
+        "title": "Credentials",
+        "type": "ObjectType",
+        "description": "Mongo username and password needed to connect to database.",
+        "default": {
+          "username": "",
+          "password": ""
+        }
+      },
+      "database": {
+        "title": "Database Name",
+        "type": "StringType",
+        "description": "Database name.",
+        "default": "test"
+      },
+      "enrich": {
+        "title": "Signal Enrichment",
+        "type": "ObjectType",
+        "description": "If true, include original input signal in output signal.",
+        "default": {
+          "exclude_existing": true,
+          "enrich_field": ""
+        }
+      },
+      "limit": {
+        "title": "Limit",
+        "type": "IntType",
+        "description": "Max number of documents returned by find query.",
+        "default": 0
+      },
+      "sort": {
+        "title": "Sort",
+        "type": "ListType",
+        "description": "Properties to sort the data by.",
+        "default": []
+      }
+    },
     "inputs": {},
-    "outputs": {},
-    "properties": {},
+    "outputs": {
+      "no_results": {
+        "description": "Output signal when no results are found."
+      },
+      "results": {
+        "description": "Output signal containing the `find` results from Mongo."
+      }
+    },
     "commands": {}
   },
   "nio/MongoDBInsert": {
-    "version": "0.0.1",
-    "description": "",
+    "version": "3.0.0",
+    "description": "Stores input signals in a mongo database. One document will be inserted into the database for each input signal.",
+    "properties": {
+      "collection": {
+        "title": "Collection Name",
+        "type": "Type",
+        "description": "Expression property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections.",
+        "default": "signals"
+      },
+      "connection": {
+        "title": "Connection",
+        "type": "ObjectType",
+        "description": "Configurables for which Mongo Database to connect to.",
+        "default": {
+          "host": "127.0.0.1",
+          "ssl": false,
+          "port": 27017
+        }
+      },
+      "creds": {
+        "title": "Credentials",
+        "type": "ObjectType",
+        "description": "Mongo username and password needed to connect to database.",
+        "default": {
+          "username": "",
+          "password": ""
+        }
+      },
+      "database": {
+        "title": "Database Name",
+        "type": "StringType",
+        "description": "Database name.",
+        "default": "test"
+      },
+      "enrich": {
+        "title": "Signal Enrichment",
+        "type": "ObjectType",
+        "description": "If true, include original input signal in output signal.",
+        "default": {
+          "exclude_existing": true,
+          "enrich_field": ""
+        }
+      },
+      "with_type": {
+        "title": "Include the type of logged signals?",
+        "type": "BoolType",
+        "description": "If `True`, includes the signal type in the document.",
+        "default": false
+      }
+    },
     "inputs": {},
     "outputs": {},
-    "properties": {},
     "commands": {}
   },
   "nio/MongoDBRemove": {
-    "version": "0.0.1",
-    "description": "",
+    "version": "3.0.0",
+    "description": "Stores input signals in a mongo database. One document will be removed from the database for each input signal.",
+    "properties": {
+      "collection": {
+        "title": "Collection Name",
+        "type": "Type",
+        "description": "Expression property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections.",
+        "default": "signals"
+      },
+      "condition": {
+        "title": "Condition",
+        "type": "Type",
+        "description": "",
+        "default": "{'id': {'$gt': 0}}"
+      },
+      "connection": {
+        "title": "Connection",
+        "type": "ObjectType",
+        "description": "Configurables for which Mongo Database to connect to.",
+        "default": {
+          "host": "127.0.0.1",
+          "ssl": false,
+          "port": 27017
+        }
+      },
+      "creds": {
+        "title": "Credentials",
+        "type": "ObjectType",
+        "description": "Mongo username and password needed to connect to database.",
+        "default": {
+          "username": "",
+          "password": ""
+        }
+      },
+      "database": {
+        "title": "Database Name",
+        "type": "StringType",
+        "description": "Database name.",
+        "default": "test"
+      },
+      "enrich": {
+        "title": "Signal Enrichment",
+        "type": "ObjectType",
+        "description": "If true, include original input signal in output signal.",
+        "default": {
+          "exclude_existing": true,
+          "enrich_field": ""
+        }
+      },
+      "only_one": {
+        "title": "Maximum One Deletion",
+        "type": "BoolType",
+        "description": "If true, will only remove one document.",
+        "default": false
+      }
+    },
     "inputs": {},
     "outputs": {},
-    "properties": {},
     "commands": {}
   },
   "nio/MongoDBUpdate": {
-    "version": "0.0.1",
-    "description": "",
+    "version": "3.0.0",
+    "description": "Stores input signals in a mongo database. One document will be updated in the database for each input signal.",
+    "properties": {
+      "collection": {
+        "title": "Collection Name",
+        "type": "Type",
+        "description": "Expression property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections.",
+        "default": "signals"
+      },
+      "connection": {
+        "title": "Connection",
+        "type": "ObjectType",
+        "description": "Configurables for which Mongo Database to connect to.",
+        "default": {
+          "host": "127.0.0.1",
+          "ssl": false,
+          "port": 27017
+        }
+      },
+      "creds": {
+        "title": "Credentials",
+        "type": "ObjectType",
+        "description": "Mongo username and password needed to connect to database.",
+        "default": {
+          "username": "",
+          "password": ""
+        }
+      },
+      "database": {
+        "title": "Database Name",
+        "type": "StringType",
+        "description": "Database name.",
+        "default": "test"
+      },
+      "document": {
+        "title": "Update Document",
+        "type": "Type",
+        "description": "Dictionary of what the document should be updated to.",
+        "default": "{{ { '\\$set': $.to_dict() } }}"
+      },
+      "enrich": {
+        "title": "Signal Enrichment",
+        "type": "ObjectType",
+        "description": "If true, include original input signal in output signal.",
+        "default": {
+          "exclude_existing": true,
+          "enrich_field": ""
+        }
+      },
+      "multi": {
+        "title": "Multi",
+        "type": "BoolType",
+        "description": "If true update multiple documents.",
+        "default": false
+      },
+      "spec": {
+        "title": "Query Document",
+        "type": "Type",
+        "description": "Document ID to update",
+        "default": "{'id': {{$id}} }"
+      },
+      "upsert": {
+        "title": "Upsert",
+        "type": "BoolType",
+        "description": "If true, update attempts that can't find the correct document ID will insert a new document.",
+        "default": false
+      }
+    },
     "inputs": {},
     "outputs": {},
-    "properties": {},
     "commands": {}
   }
 }

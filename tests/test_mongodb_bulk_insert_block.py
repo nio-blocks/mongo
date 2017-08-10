@@ -1,7 +1,8 @@
-from ..mongodb_bulk_insert_block import MongoDBBulkInsert, DuplicateKeyError
 from unittest.mock import MagicMock, patch
 from nio.testing.block_test_case import NIOBlockTestCase
 from nio.signal.base import Signal
+
+from ..mongodb_bulk_insert_block import MongoDBBulkInsert, DuplicateKeyError
 
 
 class SignalA(Signal):
@@ -60,6 +61,6 @@ class TestMongoBulkInsert(NIOBlockTestCase):
         blk.start()
         blk.process_signals(signals)
         self.assertEqual(blk._collection.insert.call_count, 1)
-        blk.logger.error.assert_called_with('Collection insert failed:'
-                                             ' Exception: uh oh')
+        blk.logger.error.assert_called_with(
+            'Collection insert failed: Exception: uh oh')
         blk.stop()

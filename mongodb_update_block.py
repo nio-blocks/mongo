@@ -1,10 +1,9 @@
-from .mongodb_base import MongoDBBase
-from nio.util.discovery import discoverable
 from nio.properties import Property
 from nio.properties.bool import BoolProperty
 
+from .mongodb_base import MongoDBBase
 
-@discoverable
+
 class MongoDBUpdate(MongoDBBase):
 
     """ A block for updating a mongodb.
@@ -28,10 +27,9 @@ class MongoDBUpdate(MongoDBBase):
         multi (str): Perform update on only one matche if False.
 
     """
-    spec = Property(title='Query Document',
-                              default="{'id': {{$id}} }")
-    document = Property(title='Update Document',
-                                  default="{{ { '\$set': $.to_dict() } }}")
+    spec = Property(title='Query Document', default="{'id': {{$id}} }")
+    document = Property(
+        title='Update Document', default="{{ { '\$set': $.to_dict() } }}")
     upsert = BoolProperty(title='Upsert', default=False)
     multi = BoolProperty(title='Multi', default=False)
 
