@@ -1,9 +1,8 @@
-from .mongodb_base import MongoDBBase
-from nio.util.discovery import discoverable
 from nio.properties import Property, BoolProperty
 
+from .mongodb_base import MongoDBBase
 
-@discoverable
+
 class MongoDBRemove(MongoDBBase):
 
     """ A block for running `remove` against a mongodb.

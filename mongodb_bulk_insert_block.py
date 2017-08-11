@@ -1,10 +1,10 @@
-from .mongodb_insert_block import MongoDBInsert
-from nio.util.discovery import discoverable
-from nio.properties.string import StringProperty
 from pymongo.errors import DuplicateKeyError
 
+from nio.properties.string import StringProperty
 
-@discoverable
+from .mongodb_insert_block import MongoDBInsert
+
+
 class MongoDBBulkInsert(MongoDBInsert):
 
     """ The same as the Mongo Block except that it won't evaluate the

@@ -1,13 +1,11 @@
-from .mongodb_base import MongoDBBase, Limitable, Sortable
-from nio.signal.base import Signal
 from nio.block.terminals import output
-from nio.util.discovery import discoverable
-from nio.properties import Property, VersionProperty
+from nio.properties import Property
+
+from .mongodb_base import MongoDBBase, Limitable, Sortable
 
 
 @output('no_results')
 @output('results')
-@discoverable
 class MongoDBFind(Limitable, Sortable, MongoDBBase):
 
     """ A block for running `find` against a mongodb.

@@ -1,6 +1,7 @@
 import ast
 import ssl
 from enum import Enum
+
 from nio.block.base import Block
 from nio.block.mixins.enrich.enrich_signals import EnrichSignals
 from nio.properties import Property, StringProperty, \

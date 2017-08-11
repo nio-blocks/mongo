@@ -1,4 +1,5 @@
 from unittest import skipIf
+
 from nio.testing.block_test_case import NIOBlockTestCase
 
 pymongo_available = True
