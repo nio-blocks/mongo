@@ -67,7 +67,7 @@
       "collection": {
         "title": "Collection Name",
         "type": "StringType",
-        "description": "Expression property. Collection name. Can be of the form `collection.subcollection.value` to access sub collections.",
+        "description": "String of the collection name to insert into.",
         "default": "signals"
       },
       "connection": {
