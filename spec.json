@@ -2,6 +2,9 @@
   "nio/MongoDBAggregation": {
     "version": "3.0.0",
     "description": "A block for finding and grouping multiple documents together.",
+    "categories": [
+      "Database"
+    ],
     "properties": {
       "collection": {
         "title": "Collection Name",
@@ -65,6 +68,9 @@
   "nio/MongoDBBulkInsert": {
     "version": "3.0.0",
     "description": "Exactly the same as MongoDB, except it stores data much faster. This is because it's `collection` property is a String property, not an Expression property. This speeds things up, as it doesn't have to evaluate it for every insert.",
+    "categories": [
+      "Database"
+    ],
     "properties": {
       "collection": {
         "title": "Collection Name",
@@ -128,6 +134,9 @@
   "nio/MongoDBCommand": {
     "version": "3.0.0",
     "description": "A block for running mongo commands",
+    "categories": [
+      "Database"
+    ],
     "properties": {
       "collection": {
         "title": "Collection Name",
@@ -191,6 +200,9 @@
   "nio/MongoDBFind": {
     "version": "3.0.0",
     "description": "A block for running `find` against a mongodb.",
+    "categories": [
+      "Database"
+    ],
     "properties": {
       "collection": {
         "title": "Collection Name",
@@ -269,6 +281,9 @@
   "nio/MongoDBInsert": {
     "version": "3.0.0",
     "description": "Stores input signals in a mongo database. One document will be inserted into the database for each input signal.",
+    "categories": [
+      "Database"
+    ],
     "properties": {
       "collection": {
         "title": "Collection Name",
@@ -332,6 +347,9 @@
   "nio/MongoDBRemove": {
     "version": "3.0.0",
     "description": "Stores input signals in a mongo database. One document will be removed from the database for each input signal.",
+    "categories": [
+      "Database"
+    ],
     "properties": {
       "collection": {
         "title": "Collection Name",
@@ -401,6 +419,9 @@
   "nio/MongoDBUpdate": {
     "version": "3.0.0",
     "description": "Stores input signals in a mongo database. One document will be updated in the database for each input signal.",
+    "categories": [
+      "Database"
+    ],
     "properties": {
       "collection": {
         "title": "Collection Name",
