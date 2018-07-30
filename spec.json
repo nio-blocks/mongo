@@ -17,9 +17,9 @@
         "type": "ObjectType",
         "description": "Configurables for which Mongo Database to connect to.",
         "default": {
+          "port": 27017,
           "host": "127.0.0.1",
-          "ssl": false,
-          "port": 27017
+          "ssl": false
         }
       },
       "creds": {
@@ -27,8 +27,8 @@
         "type": "ObjectType",
         "description": "Mongo username and password needed to connect to database.",
         "default": {
-          "username": "",
-          "password": ""
+          "password": "",
+          "username": ""
         }
       },
       "database": {
@@ -53,8 +53,16 @@
         "default": []
       }
     },
-    "inputs": {},
-    "outputs": {},
+    "inputs": {
+      "default": {
+        "description": "Any list of signals."
+      }
+    },
+    "outputs": {
+      "default": {
+        "description": "A signal with the results of the query and the original signal if configured to do so."
+      }
+    },
     "commands": {}
   },
   "nio/MongoDBBulkInsert": {
@@ -75,9 +83,9 @@
         "type": "ObjectType",
         "description": "Configurables for which Mongo Database to connect to.",
         "default": {
+          "port": 27017,
           "host": "127.0.0.1",
-          "ssl": false,
-          "port": 27017
+          "ssl": false
         }
       },
       "creds": {
@@ -85,8 +93,8 @@
         "type": "ObjectType",
         "description": "Mongo username and password needed to connect to database.",
         "default": {
-          "username": "",
-          "password": ""
+          "password": "",
+          "username": ""
         }
       },
       "database": {
@@ -111,8 +119,16 @@
         "default": false
       }
     },
-    "inputs": {},
-    "outputs": {},
+    "inputs": {
+      "default": {
+        "description": "Any list of signals."
+      }
+    },
+    "outputs": {
+      "default": {
+        "description": "A signal with the results of the query and the original signal if configured to do so."
+      }
+    },
     "commands": {}
   },
   "nio/MongoDBCommand": {
@@ -139,9 +155,9 @@
         "type": "ObjectType",
         "description": "Configurables for which Mongo Database to connect to.",
         "default": {
+          "port": 27017,
           "host": "127.0.0.1",
-          "ssl": false,
-          "port": 27017
+          "ssl": false
         }
       },
       "creds": {
@@ -149,8 +165,8 @@
         "type": "ObjectType",
         "description": "Mongo username and password needed to connect to database.",
         "default": {
-          "username": "",
-          "password": ""
+          "password": "",
+          "username": ""
         }
       },
       "database": {
@@ -169,8 +185,16 @@
         }
       }
     },
-    "inputs": {},
-    "outputs": {},
+    "inputs": {
+      "default": {
+        "description": "Any list of signals."
+      }
+    },
+    "outputs": {
+      "default": {
+        "description": "A signal with the results of the query and the original signal if configured to do so."
+      }
+    },
     "commands": {}
   },
   "nio/MongoDBFind": {
@@ -197,9 +221,9 @@
         "type": "ObjectType",
         "description": "Configurables for which Mongo Database to connect to.",
         "default": {
+          "port": 27017,
           "host": "127.0.0.1",
-          "ssl": false,
-          "port": 27017
+          "ssl": false
         }
       },
       "creds": {
@@ -207,8 +231,8 @@
         "type": "ObjectType",
         "description": "Mongo username and password needed to connect to database.",
         "default": {
-          "username": "",
-          "password": ""
+          "password": "",
+          "username": ""
         }
       },
       "database": {
@@ -239,7 +263,11 @@
         "default": []
       }
     },
-    "inputs": {},
+    "inputs": {
+      "default": {
+        "description": "Any list of signasl."
+      }
+    },
     "outputs": {
       "no_results": {
         "description": "Output signal when no results are found."
@@ -268,9 +296,9 @@
         "type": "ObjectType",
         "description": "Configurables for which Mongo Database to connect to.",
         "default": {
+          "port": 27017,
           "host": "127.0.0.1",
-          "ssl": false,
-          "port": 27017
+          "ssl": false
         }
       },
       "creds": {
@@ -278,8 +306,8 @@
         "type": "ObjectType",
         "description": "Mongo username and password needed to connect to database.",
         "default": {
-          "username": "",
-          "password": ""
+          "password": "",
+          "username": ""
         }
       },
       "database": {
@@ -304,8 +332,16 @@
         "default": false
       }
     },
-    "inputs": {},
-    "outputs": {},
+    "inputs": {
+      "default": {
+        "description": "Any list of signals."
+      }
+    },
+    "outputs": {
+      "default": {
+        "description": "A signal with the results of the query and the original signal if configured to do so."
+      }
+    },
     "commands": {}
   },
   "nio/MongoDBRemove": {
@@ -332,9 +368,9 @@
         "type": "ObjectType",
         "description": "Configurables for which Mongo Database to connect to.",
         "default": {
+          "port": 27017,
           "host": "127.0.0.1",
-          "ssl": false,
-          "port": 27017
+          "ssl": false
         }
       },
       "creds": {
@@ -342,8 +378,8 @@
         "type": "ObjectType",
         "description": "Mongo username and password needed to connect to database.",
         "default": {
-          "username": "",
-          "password": ""
+          "password": "",
+          "username": ""
         }
       },
       "database": {
@@ -368,8 +404,16 @@
         "default": false
       }
     },
-    "inputs": {},
-    "outputs": {},
+    "inputs": {
+      "default": {
+        "description": "Any list of signals."
+      }
+    },
+    "outputs": {
+      "default": {
+        "description": "A signal with the results of the query and the original signal if configured to do so."
+      }
+    },
     "commands": {}
   },
   "nio/MongoDBUpdate": {
@@ -390,9 +434,9 @@
         "type": "ObjectType",
         "description": "Configurables for which Mongo Database to connect to.",
         "default": {
+          "port": 27017,
           "host": "127.0.0.1",
-          "ssl": false,
-          "port": 27017
+          "ssl": false
         }
       },
       "creds": {
@@ -400,8 +444,8 @@
         "type": "ObjectType",
         "description": "Mongo username and password needed to connect to database.",
         "default": {
-          "username": "",
-          "password": ""
+          "password": "",
+          "username": ""
         }
       },
       "database": {
@@ -444,8 +488,16 @@
         "default": false
       }
     },
-    "inputs": {},
-    "outputs": {},
+    "inputs": {
+      "default": {
+        "description": "Any list of signals."
+      }
+    },
+    "outputs": {
+      "default": {
+        "description": "A signal with the results of the query and the original signal if configured to do so."
+      }
+    },
     "commands": {}
   }
 }
