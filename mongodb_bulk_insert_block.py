@@ -1,6 +1,6 @@
 from pymongo.errors import DuplicateKeyError
 
-from nio.properties.string import StringProperty
+from nio.properties import StringProperty, VersionProperty
 
 from .mongodb_insert_block import MongoDBInsert
 
@@ -14,6 +14,7 @@ class MongoDBBulkInsert(MongoDBInsert):
     Use this block for better performance on large volume inserts.
     """
     collection = StringProperty(title='Collection Name', default="signals")
+    version = VersionProperty('3.0.1')
 
     def configure(self, context):
         super().configure(context)
