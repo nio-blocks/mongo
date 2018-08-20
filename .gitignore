@@ -54,3 +54,6 @@ docs/_build/
 
 # emacs swap
 *~
+
+# pytest
+.pytest_cache/

@@ -38,25 +38,21 @@ class TestMongoDB(NIOBlockTestCase):
         )
         blk.stop()
 
-    def test_save_to_db(self):
+    @patch('pymongo.MongoClient')
+    def test_save_to_db(self, mock_client):
         blk = MongoDBInsert()
-        try:
-            self.configure_block(blk, {'with_type': True})
-            signals = [
-                SignalA('foo')
-            ]
-            collection = pymongo.MongoClient('127.0.0.1', 27017).test.signals
-            collection.drop()
-            blk.start()
-            blk.process_signals(signals)
-            for obj in collection.find():
-                obj = {key: obj[key] for key in obj if key != '_id'}
-                self.assertEqual(obj, signals[0].to_dict(with_type=True))
-            blk.stop()
-        except AssertionError as e:
-            raise e
-        except Exception as e:
-            pass
+        self.configure_block(blk, {'with_type': True})
+        signals = [
+            SignalA('foo')
+        ]
+        collection = pymongo.MongoClient('127.0.0.1', 27017).test.signals
+        collection.drop()
+        blk.start()
+        blk.process_signals(signals)
+        for obj in collection.find():
+            obj = {key: obj[key] for key in obj if key != '_id'}
+            self.assertEqual(obj, signals[0].to_dict(with_type=True))
+        blk.stop()
 
     @patch('pymongo.MongoClient')
     @patch.object(MongoDBInsert, "execute_query")
