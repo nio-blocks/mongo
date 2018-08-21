@@ -30,7 +30,8 @@ class TestMongoDB(NIOBlockTestCase):
         blk.start()
         blk.process_signals(signals)
         blk.stop()
-        mock_collection.aggregate.assert_called_once_with([{'$group': {'_id': '$field', 'count': {'$sum': 1}}}])
+        mock_collection.aggregate.assert_called_once_with(
+            [{'$group': {'_id': '$field', 'count': {'$sum': 1}}}])
         # one signal for each aggregated set
         self.assertEqual(2, len(self.last_notified[DEFAULT_TERMINAL]))
         self.assertDictEqual(
