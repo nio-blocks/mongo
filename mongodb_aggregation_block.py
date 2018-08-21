@@ -25,4 +25,4 @@ class MongoDBAggregation(MongoDBBase):
         self.logger.debug("Searching aggregation {}".format(pipes))
 
         cursor = collection.aggregate(pipes, **(self.query_args()))
-        return [cursor]
+        return cursor
