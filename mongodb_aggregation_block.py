@@ -13,7 +13,9 @@ class AggregationPipe(PropertyHolder):
 class MongoDBAggregation(MongoDBBase):
 
     """ A block for finding and grouping multiple documents together."""
-    pipeline = ListProperty(AggregationPipe, title="Aggregation Pipeline")
+    pipeline = ListProperty(AggregationPipe,
+                            title="Aggregation Pipeline",
+                            default=[AggregationPipe()])
 
     def execute_query(self, collection, signal):
         pipes = []
@@ -23,4 +25,4 @@ class MongoDBAggregation(MongoDBBase):
         self.logger.debug("Searching aggregation {}".format(pipes))
 
         cursor = collection.aggregate(pipes, **(self.query_args()))
-        return [cursor]
+        return cursor
