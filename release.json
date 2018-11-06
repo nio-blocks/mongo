@@ -1,37 +1,37 @@
 {
   "nio/MongoDBAggregation": {
     "language": "Python",
-    "version": "3.0.0",
+	"from_python": "mongodb_aggregation_block.MongoDBAggregation",
     "url": "git://github.com/nio-blocks/mongo.git"
   },
   "nio/MongoDBBulkInsert": {
     "language": "Python",
-    "version": "3.0.1",
+	"from_python": "mongodb_bulk_insert_block.MongoDBBulkInsert",
     "url": "git://github.com/nio-blocks/mongo.git"
   },
   "nio/MongoDBCommand": {
     "language": "Python",
-    "version": "3.0.0",
+	"from_python": "mongodb_command_block.MongoDBCommand",
     "url": "git://github.com/nio-blocks/mongo.git"
   },
   "nio/MongoDBFind": {
     "language": "Python",
-    "version": "3.0.0",
+	"from_python": "mongodb_find_block.MongoDBFind",
     "url": "git://github.com/nio-blocks/mongo.git"
   },
   "nio/MongoDBInsert": {
     "language": "Python",
-    "version": "3.0.0",
+	"from_python": "mongodb_insert_block.MongoDBInsert",
     "url": "git://github.com/nio-blocks/mongo.git"
   },
   "nio/MongoDBRemove": {
     "language": "Python",
-    "version": "3.0.0",
+	"from_python": "mongodb_remove_block.MongoDBRemove",
     "url": "git://github.com/nio-blocks/mongo.git"
   },
   "nio/MongoDBUpdate": {
     "language": "Python",
-    "version": "3.0.0",
+	"from_python": "mongodb_update_block.MongoDBUpdate",
     "url": "git://github.com/nio-blocks/mongo.git"
   }
 }
